@@ -68,21 +68,23 @@ export function Map() {
         setNodes(replaceNode(nodes.map(node => ({...node, isSelected: false})), node, newNode));
     }
 
-    const removeNode = () => {
-        const node = nodes.find(node => node.isSelected);
+    const removeNode = (node, nodes) => {
         const updatedNodes = nodes
             .map(aNode => ({...aNode, parents: aNode.parents.filter(aParent => aParent.id !== node.id)}))
-            .filter(aNode => aNode.id !== node.id && !(aNode.parents.length === 0 && !aNode.isRoot));
+            .filter(aNode => aNode.id !== node.id);
 
-        if (updatedNodes.length === 0) {
-            setSelectedNode(null);
-        }
+        // if (updatedNodes.length === 0) {
+        //     setSelectedNode(null);
+        // }
 
-        // todo(bug): a->b->c->d delete b leaves d
         // todo(feat): selected nodes should be a list, and we can keep going back in history
         // todo(feat): setSelectedNode(previouslySelectedNode);
 
         setNodes(updatedNodes);
+
+        updatedNodes
+            .filter(aNode => !aNode.isRoot && aNode.parents.length === 0)
+            .forEach(aNode => removeNode(aNode, updatedNodes))
     };
 
     const cancelAddNode = () => {
@@ -101,7 +103,7 @@ export function Map() {
 
     const onKeyDown = e => {
         if (e.key === 'Backspace' || e.key === 'Delete') {
-            removeNode();
+            removeNode(nodes.find(node => node.isSelected), nodes);
         } else if (e.key === 'Escape') {
             cancelAddNode();
         }
