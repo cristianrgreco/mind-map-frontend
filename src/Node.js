@@ -5,6 +5,9 @@ export function Node({value, setValue, x, y, setPosition, isNew, setIsNew, isSel
     const style = {left: `${x}px`, top: `${y}px`};
 
     const onKeyDown = e => {
+        if (e.key !== 'Escape') {
+            e.stopPropagation();
+        }
         if (e.key === 'Enter') {
             setIsNew(false);
         }
