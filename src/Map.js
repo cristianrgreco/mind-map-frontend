@@ -11,7 +11,7 @@ export function Map() {
     const [nodes, setNodes] = useState([]);
     const [selectedNode, setSelectedNode] = useState(null);
 
-    const createId = () => `id-${(new Date()).getTime()}`;
+    const createId = () => `id-${Date.now()}`;
 
     const addNode = e => {
         if (nodes.some(node => node.isNew)) {
@@ -25,6 +25,7 @@ export function Map() {
             id: createId(),
             value: '',
             isNew: true,
+            isRoot: nodes.length === 0,
             isSelected,
             x: e.pageX,
             y: e.pageY,
@@ -69,10 +70,17 @@ export function Map() {
 
     const removeNode = () => {
         const node = nodes.find(node => node.isSelected);
-        const updatedNodes = nodes.filter(aNode => aNode.id !== node.id);
+        const updatedNodes = nodes
+            .map(aNode => ({...aNode, parents: aNode.parents.filter(aParent => aParent.id !== node.id)}))
+            .filter(aNode => aNode.id !== node.id && !(aNode.parents.length === 0 && !aNode.isRoot));
 
-        // todo remove node from parents of all nodes. If node has empty parents, also remove
-        // todo setSelectedNode(previouslySelectedNode);
+        if (updatedNodes.length === 0) {
+            setSelectedNode(null);
+        }
+
+        // todo(bug): a->b->c->d delete b leaves d
+        // todo(feat): selected nodes should be a list, and we can keep going back in history
+        // todo(feat): setSelectedNode(previouslySelectedNode);
 
         setNodes(updatedNodes);
     };

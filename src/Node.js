@@ -2,7 +2,7 @@ import React from 'react';
 import AutosizeInput from 'react-input-autosize';
 import styles from './Node.module.css';
 
-export function Node({value, setValue, x, y, setPosition, isNew, setIsNew, isSelected, setIsSelected}) {
+export function Node({value, setValue, x, y, setPosition, isNew, setIsNew, isSelected, setIsSelected, isRoot}) {
     const style = {left: `${x}px`, top: `${y}px`};
 
     const onKeyDown = e => {
