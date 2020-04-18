@@ -9,7 +9,9 @@ export function Map() {
 
     const addNode = e => {
         const parents = selectedNode ? [selectedNode] : [];
-        const node = {x: e.pageX, y: e.pageY, parents};
+        const isSelected = nodes.length === 0;
+
+        const node = {value: '', isNew: true, isSelected, x: e.pageX, y: e.pageY, parents};
 
         if (nodes.length === 0) {
             setSelectedNode(node);
@@ -17,23 +19,38 @@ export function Map() {
         setNodes([...nodes, node]);
     };
 
-    const getKey = node => `${node.x}_${node.y}`;
+    const nodesWithout = node => nodes.filter(aNode => aNode !== node);
 
-    const setPosition = node => (x, y) => {
-        const newNodes = [...nodes.filter(aNode => aNode !== node), {...node, x, y}];
-        setNodes(newNodes);
-    };
+    const setValue = node => value =>
+        setNodes([...nodesWithout(node), {...node, value}]);
+
+    const setPosition = node => (x, y) =>
+        setNodes([...nodesWithout(node), {...node, x, y}]);
+
+    const setIsNew = node => isNew =>
+        setNodes([...nodesWithout(node), {...node, isNew}]);
+
+    const setIsSelected = node => isSelected => {
+        setSelectedNode(node);
+        setNodes([...nodesWithout(node).map(node => ({...node, isSelected: false})), {...node, isSelected}]);
+    }
+
+    const getKey = node => `${node.x}_${node.y}`;
 
     return (
         <div className={styles.Map} onClick={addNode}>
             {nodes.map(node => (
                 <Fragment key={getKey(node)}>
-                    <Node isSelected={node === selectedNode}
-                          setIsSelected={() => setSelectedNode(node)}
-                          isNew={node.isNew}
-                          x={node.x}
-                          y={node.y}
-                          setPosition={setPosition(node)}
+                    <Node
+                        value={node.value}
+                        setValue={setValue(node)}
+                        x={node.x}
+                        y={node.y}
+                        setPosition={setPosition(node)}
+                        isNew={node.isNew}
+                        setIsNew={setIsNew(node)}
+                        isSelected={node.isSelected}
+                        setIsSelected={setIsSelected(node)}
                     />
                     {node.parents.map(parent => (
                         <Line key={`${getKey(node)}_${getKey(parent)}`} from={node} to={parent}/>

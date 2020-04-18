@@ -1,10 +1,7 @@
-import React, {useState} from 'react';
+import React from 'react';
 import styles from './Node.module.css';
 
-export function Node({value, x, y, isNew, isSelected, setIsSelected, setPosition}) {
-    const [_value, setValue] = useState(value);
-    const [_isNew, setIsNew] = useState(isNew);
-
+export function Node({value, setValue, x, y, setPosition, isNew, setIsNew, isSelected, setIsSelected}) {
     const style = {left: `${x}px`, top: `${y}px`};
 
     const onKeyDown = e => {
@@ -15,26 +12,24 @@ export function Node({value, x, y, isNew, isSelected, setIsSelected, setPosition
 
     const onClick = e => {
         e.stopPropagation();
-        setIsSelected();
+        setIsSelected(true);
     };
 
-    const onDrag = e => {
-        console.log(e);
-        // e.preventDefault();
-        // e.stopPropagation();
+    const onDragEnd = e => {
+        e.stopPropagation();
         setPosition(e.pageX, e.pageY);
     };
 
     return (
         <div className={`${styles.Node} ${isSelected && styles.Selected}`}
              style={style}
-             // onClick={onClick}
-             draggable={true} onDragEnd={onDrag}>
+             onClick={onClick}
+             draggable={true} onDragEnd={onDragEnd}>
 
-            {!_isNew
-                ? <span>{_value}</span>
+            {!isNew
+                ? <span>{value}</span>
                 : <input type="text"
-                         name={_value}
+                         name={value}
                          autoFocus={true}
                          onChange={e => setValue(e.target.value)}
                          onKeyDown={onKeyDown}
