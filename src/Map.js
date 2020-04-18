@@ -37,47 +37,33 @@ export function Map() {
         setNodes([...nodes, node]);
     };
 
-    const replaceParent = (node, oldParent, newParent) => ({
-        ...node,
-        parents: node.parents.map(parent => parent.id === oldParent.id ? newParent : parent)
-    });
+    const replaceNode = (nodes, oldNode, newNode) => {
+        return nodes.map(node => {
+            const returnNode = node.id === oldNode.id ? newNode : node;
+            return replaceParent(returnNode, oldNode, newNode);
+        });
+    };
+
+    const replaceParent = (node, oldParent, newParent) => {
+        return {...node, parents: node.parents.map(parent => parent.id === oldParent.id ? newParent : parent)};
+    };
 
     const setValue = node => value => {
-        const newNode = {...node, value};
-        const updatedNodes = nodes.map(aNode => {
-            const returnNode = aNode.id === node.id ? newNode : aNode;
-            return replaceParent(returnNode, node, newNode);
-        });
-        setNodes(updatedNodes);
+        setNodes(replaceNode(nodes, node, {...node, value}));
     };
 
     const setPosition = node => (x, y) => {
-        const newNode = {...node, x, y};
-        const updatedNodes = nodes.map(aNode => {
-            const returnNode = aNode.id === node.id ? newNode : aNode;
-            return replaceParent(returnNode, node, newNode);
-        });
-        setNodes(updatedNodes);
+        setNodes(replaceNode(nodes, node, {...node, x, y}));
     }
 
     const setIsNew = node => isNew => {
-        const newNode = {...node, isNew};
-        const updatedNodes = nodes.map(aNode => {
-            const returnNode = aNode.id === node.id ? newNode : aNode;
-            return replaceParent(returnNode, node, newNode);
-        });
-        setNodes(updatedNodes);
+        setNodes(replaceNode(nodes, node, {...node, isNew}));
     }
 
     const setIsSelected = node => isSelected => {
         const newNode = {...node, isSelected};
-        const updatedNodes = nodes.map(aNode => {
-            const returnNode = aNode.id === node.id ? newNode : {...aNode, isSelected: false};
-            return replaceParent(returnNode, node, newNode);
-        });
-
         setSelectedNode(newNode);
-        setNodes(updatedNodes);
+        setNodes(replaceNode(nodes.map(node => ({...node, isSelected: false})), node, newNode));
     }
 
     const removeNode = () => {
@@ -105,7 +91,6 @@ export function Map() {
     };
 
     const onKeyDown = e => {
-        console.log(e.key);
         if (e.key === 'Backspace' || e.key === 'Delete') {
             removeNode();
         } else if (e.key === 'Escape') {
