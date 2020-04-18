@@ -18,6 +18,11 @@ export function Node({value, setValue, x, y, setPosition, isNew, setIsNew, isSel
         setIsSelected(true);
     };
 
+    const onDoubleClick = e => {
+        e.stopPropagation();
+        setIsNew(true);
+    };
+
     const onDragEnd = e => {
         e.stopPropagation();
         setPosition(e.pageX, e.pageY);
@@ -27,12 +32,14 @@ export function Node({value, setValue, x, y, setPosition, isNew, setIsNew, isSel
         <div className={`${styles.Node} ${isSelected && styles.Selected}`}
              style={style}
              onClick={onClick}
+             onDoubleClick={onDoubleClick}
              draggable={true} onDragEnd={onDragEnd}>
 
             {!isNew
                 ? <span>{value}</span>
                 : <input type="text"
                          name={value}
+                         value={value}
                          autoFocus={true}
                          onChange={e => setValue(e.target.value)}
                          onKeyDown={onKeyDown}

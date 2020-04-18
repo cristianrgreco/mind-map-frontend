@@ -4,9 +4,6 @@ import {Node} from "./Node";
 import {Line} from "./Line";
 
 /* todo
- *   - delete using hotkeys
- *   - if node is being edited, cannot add a new one, pressing esc cancels creating the node
- *   - edit text
  *   - hotkeys and instructions (map in bottom right?)
  */
 
@@ -17,6 +14,10 @@ export function Map() {
     const createId = () => `id-${(new Date()).getTime()}`;
 
     const addNode = e => {
+        if (nodes.some(node => node.isNew)) {
+            return;
+        }
+
         const parents = selectedNode ? [selectedNode] : [];
         const isSelected = nodes.length === 0;
 
