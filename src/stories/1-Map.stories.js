@@ -6,4 +6,4 @@ export default {
     component: Map
 };
 
-export const Empty = () => <Map/>;
+export const Default = () => <Map/>;
