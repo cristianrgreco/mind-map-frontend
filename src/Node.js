@@ -23,6 +23,8 @@ export function Node({value, setValue, x, y, setPosition, isNew, setIsNew, isSel
         setIsNew(true);
     };
 
+    // todo seems to be off
+    // todo animation ends and then it happens
     const onDragEnd = e => {
         e.stopPropagation();
         setPosition(e.pageX, e.pageY);
@@ -38,6 +40,7 @@ export function Node({value, setValue, x, y, setPosition, isNew, setIsNew, isSel
             {!isNew
                 ? <span>{value}</span>
                 : <input type="text"
+                         className={styles.Input}
                          name={value}
                          value={value}
                          autoFocus={true}

@@ -1,5 +1,3 @@
-/* todo: theme the input */
-
 .Node {
     display: inline-flex;
     position: absolute;
@@ -12,10 +10,22 @@
     text-align: center;
     z-index: 5;
 }
+
 .Node:hover {
     cursor: move;
 }
 
 .Node.Selected {
     background-color: #53532c;
+}
+
+.Input {
+    border: none;
+    color: #ccc;
+    font: 12px sans-serif;
+    background-color: #333;
+}
+
+.Input:focus {
+    outline: none;
 }
