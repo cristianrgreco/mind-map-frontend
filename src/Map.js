@@ -3,6 +3,13 @@ import styles from './Map.module.css';
 import {Node} from "./Node";
 import {Line} from "./Line";
 
+/* todo
+ *   - delete using hotkeys
+ *   - if node is being edited, cannot add a new one, pressing esc cancels creating the node
+ *   - edit text
+ *   - hotkeys and instructions (map in bottom right?)
+ */
+
 export function Map() {
     const [nodes, setNodes] = useState([]);
     const [selectedNode, setSelectedNode] = useState(null);
@@ -13,7 +20,15 @@ export function Map() {
         const parents = selectedNode ? [selectedNode] : [];
         const isSelected = nodes.length === 0;
 
-        const node = {id: createId(), value: '', isNew: true, isSelected, x: e.pageX, y: e.pageY, parents};
+        const node = {
+            id: createId(),
+            value: '',
+            isNew: true,
+            isSelected,
+            x: e.pageX,
+            y: e.pageY,
+            parents
+        };
 
         if (nodes.length === 0) {
             setSelectedNode(node);
@@ -65,8 +80,41 @@ export function Map() {
         setNodes(updatedNodes);
     }
 
+    const removeNode = () => {
+        const node = nodes.find(node => node.isSelected);
+        const updatedNodes = nodes.filter(aNode => aNode.id !== node.id);
+
+        // todo remove node from parents of all nodes. If node has empty parents, also remove
+        // todo setSelectedNode(previouslySelectedNode);
+
+        setNodes(updatedNodes);
+    };
+
+    const cancelAddNode = () => {
+        const node = nodes.find(node => node.isNew);
+
+        if (node) {
+            const updatedNodes = nodes.filter(aNode => aNode.id !== node.id);
+
+            if (updatedNodes.length === 0) {
+                setSelectedNode(null);
+            }
+
+            setNodes(updatedNodes);
+        }
+    };
+
+    const onKeyDown = e => {
+        console.log(e.key);
+        if (e.key === 'Backspace' || e.key === 'Delete') {
+            removeNode();
+        } else if (e.key === 'Escape') {
+            cancelAddNode();
+        }
+    };
+
     return (
-        <div className={styles.Map} onClick={addNode}>
+        <div className={styles.Map} onClick={addNode} onKeyDown={onKeyDown} tabIndex={0}>
             {nodes.map(node => (
                 <Fragment key={node.id}>
                     <Node

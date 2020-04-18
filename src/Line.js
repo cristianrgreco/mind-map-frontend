@@ -1,6 +1,7 @@
 import React from "react";
 import styles from './Line.module.css';
 
+// todo if width/height is known (or something else?) then center the line
 export function Line({from: {x: x1, y: y1}, to: {x: x2, y: y2}}) {
     return (
         <svg className={styles.Line}>

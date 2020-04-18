@@ -1,8 +1,11 @@
+/* todo: theme the input */
+
 .Node {
     display: inline-flex;
     position: absolute;
     padding: 10px 15px;
     border: 1px solid #ccc;
+    border-radius: 8px;
     color: #ccc;
     background-color: #333;
     font: 12px sans-serif;
