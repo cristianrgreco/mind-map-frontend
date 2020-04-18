@@ -1,10 +1,9 @@
 import React, {useState} from 'react';
 import styles from './Node.module.css';
 
-export function Node({value, x, y, isNew, isSelected, setIsSelected = () => {}, connections = []}) {
+export function Node({value, x, y, isNew, isSelected, setIsSelected}) {
     const [_value, setValue] = useState(value);
     const [_isNew, setIsNew] = useState(isNew);
-    const [_connections, setConnections] = useState(connections);
 
     const style = {left: `${x}px`, top: `${y}px`};
 
@@ -14,8 +13,13 @@ export function Node({value, x, y, isNew, isSelected, setIsSelected = () => {}, 
         }
     };
 
+    const onClick = e => {
+        e.stopPropagation();
+        setIsSelected();
+    };
+
     return (
-        <div className={`${styles.Node} ${isSelected && styles.Selected}`} style={style} onClick={setIsSelected}>
+        <div className={`${styles.Node} ${isSelected && styles.Selected}`} style={style} onClick={onClick}>
             {!_isNew
                 ? <span>{_value}</span>
                 : <input
