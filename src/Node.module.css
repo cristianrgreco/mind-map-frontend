@@ -9,6 +9,9 @@
     text-align: center;
     z-index: 5;
 }
+.Node:hover {
+    cursor: move;
+}
 
 .Node.Selected {
     background-color: #53532c;

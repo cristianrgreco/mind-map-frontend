@@ -7,40 +7,68 @@ export function Map() {
     const [nodes, setNodes] = useState([]);
     const [selectedNode, setSelectedNode] = useState(null);
 
+    const createId = () => `id-${(new Date()).getTime()}`;
+
     const addNode = e => {
         const parents = selectedNode ? [selectedNode] : [];
         const isSelected = nodes.length === 0;
 
-        const node = {value: '', isNew: true, isSelected, x: e.pageX, y: e.pageY, parents};
+        const node = {id: createId(), value: '', isNew: true, isSelected, x: e.pageX, y: e.pageY, parents};
 
         if (nodes.length === 0) {
             setSelectedNode(node);
         }
+
         setNodes([...nodes, node]);
     };
 
-    const nodesWithout = node => nodes.filter(aNode => aNode !== node);
+    const replaceParent = (node, oldParent, newParent) => ({
+        ...node,
+        parents: node.parents.map(parent => parent.id === oldParent.id ? newParent : parent)
+    });
 
-    const setValue = node => value =>
-        setNodes([...nodesWithout(node), {...node, value}]);
+    const setValue = node => value => {
+        const newNode = {...node, value};
+        const updatedNodes = nodes.map(aNode => {
+            const returnNode = aNode.id === node.id ? newNode : aNode;
+            return replaceParent(returnNode, node, newNode);
+        });
+        setNodes(updatedNodes);
+    };
 
-    const setPosition = node => (x, y) =>
-        setNodes([...nodesWithout(node), {...node, x, y}]);
-
-    const setIsNew = node => isNew =>
-        setNodes([...nodesWithout(node), {...node, isNew}]);
-
-    const setIsSelected = node => isSelected => {
-        setSelectedNode(node);
-        setNodes([...nodesWithout(node).map(node => ({...node, isSelected: false})), {...node, isSelected}]);
+    const setPosition = node => (x, y) => {
+        const newNode = {...node, x, y};
+        const updatedNodes = nodes.map(aNode => {
+            const returnNode = aNode.id === node.id ? newNode : aNode;
+            return replaceParent(returnNode, node, newNode);
+        });
+        setNodes(updatedNodes);
     }
 
-    const getKey = node => `${node.x}_${node.y}`;
+    const setIsNew = node => isNew => {
+        const newNode = {...node, isNew};
+        const updatedNodes = nodes.map(aNode => {
+            const returnNode = aNode.id === node.id ? newNode : aNode;
+            return replaceParent(returnNode, node, newNode);
+        });
+        setNodes(updatedNodes);
+    }
+
+    const setIsSelected = node => isSelected => {
+        const newNode = {...node, isSelected};
+        const updatedNodes = nodes.map(aNode => {
+            const returnNode = aNode.id === node.id ? newNode : {...aNode, isSelected: false};
+            return replaceParent(returnNode, node, newNode);
+        });
+
+        setSelectedNode(newNode);
+        setNodes(updatedNodes);
+    }
 
     return (
         <div className={styles.Map} onClick={addNode}>
             {nodes.map(node => (
-                <Fragment key={getKey(node)}>
+                <Fragment key={node.id}>
                     <Node
                         value={node.value}
                         setValue={setValue(node)}
@@ -53,7 +81,7 @@ export function Map() {
                         setIsSelected={setIsSelected(node)}
                     />
                     {node.parents.map(parent => (
-                        <Line key={`${getKey(node)}_${getKey(parent)}`} from={node} to={parent}/>
+                        <Line key={`${node.id}_${parent.id}`} from={node} to={parent}/>
                     ))}
                 </Fragment>
             ))}
