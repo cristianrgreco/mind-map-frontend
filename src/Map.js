@@ -17,10 +17,12 @@ export function Map() {
         setNodes([...nodes, node]);
     };
 
+    const getKey = node => `${node.x}_${node.y}`;
+
     return (
-        <div className={styles.Board} onClick={addNode}>
+        <div className={styles.Map} onClick={addNode}>
             {nodes.map(node => (
-                <Fragment>
+                <Fragment key={getKey(node)}>
                     <Node
                         isSelected={node === selectedNode}
                         setIsSelected={() => setSelectedNode(node)}
@@ -29,7 +31,7 @@ export function Map() {
                         y={node.y}
                     />
                     {node.parents.map(parent => (
-                        <Line from={node} to={parent}/>
+                        <Line key={`${getKey(node)}_${getKey(parent)}`} from={node} to={parent}/>
                     ))}
                 </Fragment>
             ))}
