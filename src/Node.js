@@ -1,4 +1,5 @@
 import React from 'react';
+import AutosizeInput from 'react-input-autosize';
 import styles from './Node.module.css';
 
 export function Node({value, setValue, x, y, setPosition, isNew, setIsNew, isSelected, setIsSelected}) {
@@ -39,13 +40,13 @@ export function Node({value, setValue, x, y, setPosition, isNew, setIsNew, isSel
 
             {!isNew
                 ? <span>{value}</span>
-                : <input type="text"
-                         className={styles.Input}
-                         name={value}
-                         value={value}
-                         autoFocus={true}
-                         onChange={e => setValue(e.target.value)}
-                         onKeyDown={onKeyDown}
+                : <AutosizeInput
+                    className={styles.Input}
+                    name={value}
+                    value={value}
+                    autoFocus={true}
+                    onChange={e => setValue(e.target.value)}
+                    onKeyDown={onKeyDown}
                 />
             }
         </div>
