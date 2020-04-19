@@ -54,46 +54,45 @@ export function Map() {
     };
 
     return (
-        <div onDragOver={e => e.preventDefault()}>
+        <div id="hello" onClick={addNode} onKeyDown={onKeyDown} onDragOver={e => e.preventDefault()}>
             <div
                 style={{transform: `translateX(${pan.x}px) translateY(${pan.y}px)`}}
-                className={styles.Map}
-                onClick={addNode}
-                onKeyDown={onKeyDown}
                 tabIndex={0}
+                className={styles.Map}
                 draggable={true}
                 onDragStart={onDragStart}
                 onDrag={onDrag}>
 
-                {nodeList.nodes.length === 0
-                    ? <div className={styles.Start}>Click anywhere to start</div>
-                    : nodeList.nodes.map(node => {
-                        const parent = nodeList.getNode(node.parent);
-                        return (
-                            <Fragment key={node.id}>
-                                <Node
-                                    value={node.value}
-                                    setValue={setValue(node)}
-                                    x={node.x}
-                                    y={node.y}
-                                    setPosition={setPosition(node)}
-                                    isNew={node.isNew}
-                                    setIsNew={setIsNew(node)}
-                                    isSelected={node.isSelected}
-                                    setIsSelected={setIsSelected(node)}
-                                    isRoot={node.isRoot}
+                {nodeList.nodes.map(node => {
+                    const parent = nodeList.getNode(node.parent);
+                    return (
+                        <Fragment key={node.id}>
+                            <Node
+                                value={node.value}
+                                setValue={setValue(node)}
+                                x={node.x}
+                                y={node.y}
+                                setPosition={setPosition(node)}
+                                isNew={node.isNew}
+                                setIsNew={setIsNew(node)}
+                                isSelected={node.isSelected}
+                                setIsSelected={setIsSelected(node)}
+                                isRoot={node.isRoot}
+                            />
+                            {!node.isRoot && (
+                                <Line
+                                    from={{x: node.x, y: node.y, w: node.width, h: node.height}}
+                                    to={{x: parent.x, y: parent.y, w: parent.width, h: parent.height}}
                                 />
-                                {!node.isRoot && (
-                                    <Line
-                                        from={{x: node.x, y: node.y, w: node.width, h: node.height}}
-                                        to={{x: parent.x, y: parent.y, w: parent.width, h: parent.height}}
-                                    />
-                                )}
-                            </Fragment>
-                        );
-                    })
+                            )}
+                        </Fragment>
+                    );
+                })
                 }
             </div>
+            {nodeList.nodes.length === 0 && (
+                <div className={styles.Start}>Click anywhere to start</div>
+            )}
             <Legend/>
         </div>
     );

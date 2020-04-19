@@ -5,14 +5,17 @@
     cursor: grab;
 }
 
-/* todo always center of viewport, like the Legend */
-.Map .Start {
+.Start {
+    width: 100%;
+    text-align: center;
     font: 32px sans-serif;
     color: #ccc;
     opacity: .5;
-    font-variant: all-small-caps;
     position: fixed;
-    left: calc(50% + 50vw);
-    top: calc(50% + 50vh);
+    left: 50%;
+    top: 50%;
     transform: translate(-50%, -50%);
+    font-variant: all-small-caps;
+    cursor: grab;
+    user-select: none;
 }
