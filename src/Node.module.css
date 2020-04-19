@@ -16,6 +16,8 @@
 }
 
 .Node.Root {
+    font-weight: bold;
+    border-width: 3px;
 }
 
 .Node.Selected {
