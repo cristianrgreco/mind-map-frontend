@@ -37,7 +37,7 @@ export function Map() {
     };
 
     return (
-        <div className={styles.Map} onClick={addNode} onKeyDown={onKeyDown} tabIndex={0}>
+        <div className={styles.Map} onClick={addNode} onKeyDown={onKeyDown} tabIndex={0} onDragOver={e => e.preventDefault()}>
             {nodeList.nodes.length === 0
                 ? <div className={styles.Start}>Click anywhere to start</div>
                 : nodeList.nodes.map(node => (

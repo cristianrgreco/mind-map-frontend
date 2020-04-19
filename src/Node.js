@@ -1,8 +1,12 @@
-import React from 'react';
+import React, {useState, useRef} from 'react';
 import AutosizeInput from 'react-input-autosize';
 import styles from './Node.module.css';
 
 export function Node({value, setValue, x, y, setPosition, isNew, setIsNew, isSelected, setIsSelected, isRoot}) {
+    const ref = useRef(null);
+
+    const [dragOffset, setDragOffset] = useState({x: 0, y: 0});
+
     const style = {left: `${x}px`, top: `${y}px`};
 
     const onKeyDown = e => {
@@ -12,6 +16,10 @@ export function Node({value, setValue, x, y, setPosition, isNew, setIsNew, isSel
         if (e.key === 'Enter') {
             setIsNew(false);
         }
+    };
+
+    const onValueChange = e => {
+        setValue(e.target.value)
     };
 
     const onClick = e => {
@@ -27,19 +35,23 @@ export function Node({value, setValue, x, y, setPosition, isNew, setIsNew, isSel
         setIsNew(true);
     };
 
-    // todo seems to be off
-    // todo animation ends and then it happens
+    const onDragStart = e => {
+        e.dataTransfer.effectAllowed = 'all';
+        setDragOffset({x: x - e.pageX, y: y - e.pageY});
+    };
+
     const onDragEnd = e => {
         e.stopPropagation();
-        setPosition(e.pageX, e.pageY);
+        setPosition(e.pageX + dragOffset.x, e.pageY + dragOffset.y);
     };
 
     return (
-        <div className={`${styles.Node} ${isSelected && styles.Selected} ${isNew && styles.New} ${isRoot && styles.Root}`}
+        <div ref={ref}
+             className={`${styles.Node} ${isSelected && styles.Selected} ${isNew && styles.New} ${isRoot && styles.Root}`}
              style={style}
              onClick={onClick}
              onDoubleClick={onDoubleClick}
-             draggable={true} onDragEnd={onDragEnd}>
+             draggable={true} onDragStart={onDragStart} onDrag={onDragEnd} onDragEnd={onDragEnd}>
 
             {!isNew
                 ? <span>{value}</span>
@@ -48,7 +60,7 @@ export function Node({value, setValue, x, y, setPosition, isNew, setIsNew, isSel
                     name={value}
                     value={value}
                     autoFocus={true}
-                    onChange={e => setValue(e.target.value)}
+                    onChange={onValueChange}
                     onKeyDown={onKeyDown}
                 />
             }
