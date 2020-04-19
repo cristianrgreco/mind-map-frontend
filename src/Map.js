@@ -7,18 +7,14 @@ import {Line} from "./Line";
  *   - hotkeys and instructions (map in bottom right?)
  */
 export function Map({ nodeListInstance }) {
+
     // todo only state should be nodeList, it should return new instances and should be updated in the state
     const [nodeList] = useState(nodeListInstance);
     const [nodes, setNodes] = useState([]);
-    const [, setSelectedNode] = useState(null);
-    const [, setSelectedNodes] = useState([]);
 
     const addNode = e => {
         nodeList.addNode(e.pageX, e.pageY);
-
         setNodes(nodeList.nodes);
-        setSelectedNode(nodeList.selectedNode);
-        setSelectedNodes(nodeList.selectedNodes);
     };
 
     const setValue = node => value => {
@@ -38,26 +34,16 @@ export function Map({ nodeListInstance }) {
 
     const setIsSelected = node => () => {
         nodeList.setIsSelected(node.id);
-
         setNodes(nodeList.nodes);
-        setSelectedNode(nodeList.selectedNode);
-        setSelectedNodes(nodeList.selectedNodes);
     }
 
     const onKeyDown = e => {
         if (e.key === 'Backspace' || e.key === 'Delete') {
             nodeList.removeNode(nodes.find(node => node.isSelected).id);
-
             setNodes(nodeList.nodes);
-            setSelectedNode(nodeList.selectedNode);
-            setSelectedNodes(nodeList.selectedNodes);
-
         } else if (e.key === 'Escape') {
             nodeList.cancelAddNode()
-
             setNodes(nodeList.nodes);
-            setSelectedNode(nodeList.selectedNode);
-            setSelectedNodes(nodeList.selectedNodes);
         }
     };
 
