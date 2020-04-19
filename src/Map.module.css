@@ -5,14 +5,26 @@
     cursor: grab;
 }
 
-/* todo always center of viewport: pan right, create node, delete node, it's to the left */
+/* todo always center of viewport, like the Legend */
 .Map .Start {
     font: 28px sans-serif;
     color: #ccc;
-    opacity: .25;
+    opacity: .5;
     text-transform: capitalize;
-    position: absolute;
-    left: calc(5000px + 50vw);
-    top: calc(5000px + 50vh);
+    position: fixed;
+    left: calc(50% + 50vw);
+    top: calc(50% + 50vh);
     transform: translate(-50%, -50%);
+}
+
+.Legend {
+    width: 100%;
+    text-align: right;
+    font: 14px sans-serif;
+    color: #ccc;
+    opacity: .5;
+    position: fixed;
+    left: calc(100% - 15px);
+    top: calc(100% - 15px);
+    transform: translate(-100%, -100%);
 }

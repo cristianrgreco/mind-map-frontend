@@ -93,6 +93,10 @@ export function Map() {
                     })
                 }
             </div>
+            <div className={styles.Legend}>
+                <div>Some text init</div>
+                <div>Some more text init</div>
+            </div>
         </div>
     );
 }
