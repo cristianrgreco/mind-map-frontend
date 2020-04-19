@@ -28,3 +28,7 @@
     top: calc(100% - 15px);
     transform: translate(-100%, -100%);
 }
+
+.Legend .LegendItem {
+    line-height: 20px;
+}
