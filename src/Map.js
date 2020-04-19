@@ -11,6 +11,7 @@ import {NodeList} from "./NodeList";
  */
 export function Map() {
     const [nodeList, setNodeList] = useState(new NodeList());
+    const [scale, setScale] = useState(1.2);
 
     const addNode = e =>
         setNodeList(nodeList.addNode(e.pageX, e.pageY));
@@ -35,37 +36,62 @@ export function Map() {
         }
     };
 
-    const onDragOver = e => e.preventDefault();
-
     return (
-        <div className={styles.Map} onClick={addNode} onKeyDown={onKeyDown} tabIndex={0} onDragOver={onDragOver}>
-            {nodeList.nodes.length === 0
-                ? <div className={styles.Start}>Click anywhere to start</div>
-                : nodeList.nodes.map(node => {
-                    const parent = nodeList.findById(node.parent);
-                    return (
-                        <Fragment key={node.id}>
-                            <Node
-                                value={node.value}
-                                setValue={setValue(node)}
-                                x={node.x}
-                                y={node.y}
-                                setPosition={setPosition(node)}
-                                isNew={node.isNew}
-                                setIsNew={setIsNew(node)}
-                                isSelected={node.isSelected}
-                                setIsSelected={setIsSelected(node)}
-                                isRoot={node.isRoot}
-                            />
-                            {!node.isRoot && (
-                                <Line
-                                    from={{x: node.x, y: node.y, w: node.width, h: node.height}}
-                                    to={{x: parent.x, y: parent.y, w: parent.width, h: parent.height}}/>
-                            )}
-                        </Fragment>
-                    );
-                })
-            }
-        </div>
+        <Fragment>
+            <input
+                className={styles.Slider}
+                type="range"
+                min="0.7" max="1.7" step="0.1"
+                value={scale}
+                onChange={e => setScale(e.target.value)}
+            />
+            <div
+                style={{zoom: `${scale * 100}%`}}
+                tabIndex={0}
+                className={styles.Map}
+                onClick={addNode}
+                onKeyDown={onKeyDown}
+                onDragOver={e => e.preventDefault()}>
+
+                {nodeList.nodes.length === 0
+                    ? <div className={styles.Start}>Click anywhere to start</div>
+                    : nodeList.nodes.map(node => {
+                        const parent = nodeList.findById(node.parent);
+                        return (
+                            <Fragment key={node.id}>
+                                <Node
+                                    value={node.value}
+                                    setValue={setValue(node)}
+                                    scale={scale}
+                                    x={node.x}
+                                    y={node.y}
+                                    setPosition={setPosition(node)}
+                                    isNew={node.isNew}
+                                    setIsNew={setIsNew(node)}
+                                    isSelected={node.isSelected}
+                                    setIsSelected={setIsSelected(node)}
+                                    isRoot={node.isRoot}
+                                />
+                                {!node.isRoot && (
+                                    <Line
+                                        from={{
+                                            x: node.x * (1 / scale),
+                                            y: node.y * (1 / scale),
+                                            w: node.width,
+                                            h: node.height
+                                        }}
+                                        to={{
+                                            x: parent.x * (1 / scale),
+                                            y: parent.y * (1 / scale),
+                                            w: parent.width,
+                                            h: parent.height
+                                        }}/>
+                                )}
+                            </Fragment>
+                        );
+                    })
+                }
+            </div>
+        </Fragment>
     );
 }
