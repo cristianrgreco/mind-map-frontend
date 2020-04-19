@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import AutosizeInput from 'react-input-autosize';
 import styles from './Node.module.css';
 
-export function Node({value, setValue, scale, x, y, setPosition, isNew, setIsNew, isSelected, setIsSelected, isRoot}) {
+export function Node({value, setValue, x, y, setPosition, isNew, setIsNew, isSelected, setIsSelected, isRoot}) {
     const ref = useRef(null);
 
     useEffect(() => {
@@ -43,14 +43,14 @@ export function Node({value, setValue, scale, x, y, setPosition, isNew, setIsNew
 
     const onDragEnd = e => {
         e.stopPropagation();
-        setPosition((e.pageX) + dragOffset.x, e.pageY + dragOffset.y);
+        setPosition(e.pageX + dragOffset.x, e.pageY + dragOffset.y);
     };
 
     return (
         <div
             ref={ref}
             className={`${styles.Node} ${isSelected && styles.Selected} ${isNew && styles.New} ${isRoot && styles.Root}`}
-            style={{left: `${x*(1/scale)}px`, top: `${y*(1/scale)}px`}}
+            style={{left: `${x}px`, top: `${y}px`}}
             onClick={onClick}
             onDoubleClick={onDoubleClick}
             draggable={true} onDragStart={onDragStart} onDrag={onDragEnd} onDragEnd={onDragEnd}>
