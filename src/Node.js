@@ -41,7 +41,7 @@ export function Node({value, setValue, x, y, setPosition, isNew, setIsNew, isSel
         setDragOffset({x: x - e.pageX, y: y - e.pageY});
     };
 
-    const onDragEnd = e => {
+    const onDrag = e => {
         e.stopPropagation();
 
         if (e.pageX) {
@@ -56,7 +56,7 @@ export function Node({value, setValue, x, y, setPosition, isNew, setIsNew, isSel
             style={{left: `${x}px`, top: `${y}px`}}
             onClick={onClick}
             onDoubleClick={onDoubleClick}
-            draggable={true} onDragStart={onDragStart} onDrag={onDragEnd} onDragEnd={onDragEnd}>
+            draggable={true} onDragStart={onDragStart} onDrag={onDrag}>
 
             {!isNew
                 ? <span>{value}</span>

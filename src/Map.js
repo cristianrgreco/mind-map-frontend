@@ -11,9 +11,11 @@ import {NodeList} from "./NodeList";
  */
 export function Map() {
     const [nodeList, setNodeList] = useState(new NodeList());
+    const [startPan, setStartPan] = useState({x: 0, y: 0});
+    const [pan, setPan] = useState({x: -5000, y: -5000});
 
     const addNode = e =>
-        setNodeList(nodeList.addNode(e.pageX, e.pageY));
+        setNodeList(nodeList.addNode(e.pageX - pan.x, e.pageY - pan.y));
 
     const setValue = node => (value, width, height) =>
         setNodeList(nodeList.setValue(node.id, value, width, height));
@@ -35,37 +37,59 @@ export function Map() {
         }
     };
 
-    const onDragOver = e => e.preventDefault();
+    const onDragStart = e => {
+        console.log('start', e);
+        setStartPan({x: pan.x - e.pageX, y: pan.y - e.pageY});
+    };
+
+    const onDrag = e => {
+        e.preventDefault();
+
+        if (e.pageX) {
+            setPan({x: e.pageX + startPan.x, y: e.pageY + startPan.y});
+        }
+    };
 
     return (
-        <div className={styles.Map} onClick={addNode} onKeyDown={onKeyDown} tabIndex={0} onDragOver={onDragOver}>
-            {nodeList.nodes.length === 0
-                ? <div className={styles.Start}>Click anywhere to start</div>
-                : nodeList.nodes.map(node => {
-                    const parent = nodeList.getNode(node.parent);
-                    return (
-                        <Fragment key={node.id}>
-                            <Node
-                                value={node.value}
-                                setValue={setValue(node)}
-                                x={node.x}
-                                y={node.y}
-                                setPosition={setPosition(node)}
-                                isNew={node.isNew}
-                                setIsNew={setIsNew(node)}
-                                isSelected={node.isSelected}
-                                setIsSelected={setIsSelected(node)}
-                                isRoot={node.isRoot}
-                            />
-                            {!node.isRoot && (
-                                <Line
-                                    from={{x: node.x, y: node.y, w: node.width, h: node.height}}
-                                    to={{x: parent.x, y: parent.y, w: parent.width, h: parent.height}}/>
-                            )}
-                        </Fragment>
-                    );
-                })
-            }
+        <div onDragOver={e => e.preventDefault()}>
+            <div
+                style={{transform: `translateX(${pan.x}px) translateY(${pan.y}px)`}}
+                className={styles.Map}
+                onClick={addNode}
+                onKeyDown={onKeyDown}
+                tabIndex={0}
+                draggable={true}
+                onDragStart={onDragStart}
+                onDrag={onDrag}>
+
+                {nodeList.nodes.length === 0
+                    ? <div className={styles.Start}>Click anywhere to start</div>
+                    : nodeList.nodes.map(node => {
+                        const parent = nodeList.getNode(node.parent);
+                        return (
+                            <Fragment key={node.id}>
+                                <Node
+                                    value={node.value}
+                                    setValue={setValue(node)}
+                                    x={node.x}
+                                    y={node.y}
+                                    setPosition={setPosition(node)}
+                                    isNew={node.isNew}
+                                    setIsNew={setIsNew(node)}
+                                    isSelected={node.isSelected}
+                                    setIsSelected={setIsSelected(node)}
+                                    isRoot={node.isRoot}
+                                />
+                                {!node.isRoot && (
+                                    <Line
+                                        from={{x: node.x, y: node.y, w: node.width, h: node.height}}
+                                        to={{x: parent.x, y: parent.y, w: parent.width, h: parent.height}}/>
+                                )}
+                            </Fragment>
+                        );
+                    })
+                }
+            </div>
         </div>
     );
 }
