@@ -2,6 +2,7 @@ import React from 'react';
 import AutosizeInput from 'react-input-autosize';
 import styles from './Node.module.css';
 
+// todo add visual indication when node is new, like a star on the top right
 export function Node({value, setValue, x, y, setPosition, isNew, setIsNew, isSelected, setIsSelected, isRoot}) {
     const style = {left: `${x}px`, top: `${y}px`};
 

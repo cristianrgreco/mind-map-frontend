@@ -6,18 +6,30 @@ import {Line} from "./Line";
 /* todo
  *   - hotkeys and instructions (map in bottom right?)
  */
-
 export function Map() {
     const [nodes, setNodes] = useState([]);
     const [selectedNode, setSelectedNode] = useState(null);
+    const [selectedNodes, setSelectedNodes] = useState([]);
 
     const createId = () => `id-${Date.now()}`;
+
+    const addSelectedNode = selectedNode => {
+        if (selectedNodes.length === 0) {
+            setSelectedNodes([selectedNode]);
+        } else {
+            const lastSelectedNode = selectedNodes[selectedNodes.length - 1];
+            if (lastSelectedNode.id !== selectedNode.id) {
+                setSelectedNodes([...selectedNodes, selectedNode]);
+            }
+        }
+    };
 
     const addNode = e => {
         if (nodes.some(node => node.isNew)) {
             return;
         }
 
+        // todo can there be more than one parent?
         const parents = selectedNode ? [selectedNode] : [];
         const isSelected = nodes.length === 0;
 
@@ -34,11 +46,13 @@ export function Map() {
 
         if (nodes.length === 0) {
             setSelectedNode(node);
+            addSelectedNode(node);
         }
 
         setNodes([...nodes, node]);
     };
 
+    // todo also need to replace selectedNodes
     const replaceNode = (nodes, oldNode, newNode) => {
         return nodes.map(node => {
             const returnNode = node.id === oldNode.id ? newNode : node;
@@ -65,6 +79,7 @@ export function Map() {
     const setIsSelected = node => isSelected => {
         const newNode = {...node, isSelected};
         setSelectedNode(newNode);
+        addSelectedNode(newNode);
         setNodes(replaceNode(nodes.map(node => ({...node, isSelected: false})), node, newNode));
     }
 
@@ -73,14 +88,26 @@ export function Map() {
             .map(aNode => ({...aNode, parents: aNode.parents.filter(aParent => aParent.id !== node.id)}))
             .filter(aNode => aNode.id !== node.id);
 
-        // if (updatedNodes.length === 0) {
-        //     setSelectedNode(null);
-        // }
-
-        // todo(feat): selected nodes should be a list, and we can keep going back in history
-        // todo(feat): setSelectedNode(previouslySelectedNode);
-
         setNodes(updatedNodes);
+
+
+        // todo(bug): when removing selected node, the previously selected node doesn't become re-selected
+        // todo(feat): do nodes need to be removed from the selected nodes list? It's becoming cumbersome removing them now
+
+        if (node.isSelected) {
+            console.log('Remove selected node', selectedNodes, node.id)
+            const selectedNodeIndex = selectedNodes.findIndex(aNode => aNode.id === node.id);
+            console.log(selectedNodeIndex)
+            console.log('new selected node', selectedNodes[selectedNodeIndex - 1]);
+            if (selectedNodeIndex !== -1) {
+                setSelectedNode(selectedNodes[selectedNodeIndex - 1]);
+                // need to replace node in node array and set is selected to true
+            } else {
+                setSelectedNode(null);
+            }
+        }
+
+        setSelectedNodes(selectedNodes.filter(aNode => aNode.id !== node.id));
 
         updatedNodes
             .filter(aNode => !aNode.isRoot && aNode.parents.length === 0)
@@ -94,7 +121,12 @@ export function Map() {
             const updatedNodes = nodes.filter(aNode => aNode.id !== node.id);
 
             if (updatedNodes.length === 0) {
-                setSelectedNode(null);
+                if (selectedNodes.length) {
+                    setSelectedNodes(selectedNodes.slice(0, selectedNodes.length - 1));
+                    setSelectedNode(selectedNodes[selectedNodes.length - 2]);
+                } else {
+                    setSelectedNode(null);
+                }
             }
 
             setNodes(updatedNodes);
