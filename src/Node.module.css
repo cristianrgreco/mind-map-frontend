@@ -23,6 +23,16 @@
     border-style: dashed;
 }
 
+.Node.Root {
+    font-size: 16px;
+    font-weight: bold;
+    border-width: 3px;
+}
+
+.Node.Root input {
+    font-weight: bold;
+}
+
 /*.Node.New:before {*/
 /*    margin: 0;*/
 /*    padding: 0;*/

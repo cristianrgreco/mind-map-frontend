@@ -52,6 +52,7 @@ export function Map() {
                             setIsNew={setIsNew(node)}
                             isSelected={node.isSelected}
                             setIsSelected={setIsSelected(node)}
+                            isRoot={node.isRoot}
                         />
                         {!node.isRoot && <Line from={node} to={findParent(node.parent)}/>}
                     </Fragment>
