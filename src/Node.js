@@ -15,7 +15,7 @@ export function Node({value, setValue, x, y, setPosition, isNew, setIsNew, isSel
         if (e.key !== 'Escape') {
             e.stopPropagation();
         }
-        if (e.key === 'Enter') {
+        if (e.key === 'Enter' && value.length) {
             setIsNew(false);
         }
     };
