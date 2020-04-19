@@ -4,6 +4,7 @@ export class NodeList {
         this.nodes = [];
         this.selectedNode = null;
         this.selectedNodes = [];
+        this.lastAddedNode = null;
     }
 
     addNode(x, y) {
@@ -31,6 +32,42 @@ export class NodeList {
         }
 
         this.nodes = [...this.nodes, newNode];
+        this.lastAddedNode = newNode.id;
+    }
+
+    cancelAddNode() {
+        if (!this.lastAddedNode) {
+            return;
+        }
+
+        this.nodes = this.nodes.filter(node => node.id !== this.lastAddedNode);
+        this.selectedNodes = this.selectedNodes.filter(node => node !== this.lastAddedNode);
+
+        if (this.selectedNode === this.lastAddedNode) {
+            const lastSelectedNode = this._lastSelectedNode();
+
+            this.selectedNode = lastSelectedNode ? lastSelectedNode : null;
+
+            if (this.selectedNode) {
+                this.nodes = this.nodes.map(node => {
+                    if (node.id === this.selectedNode) {
+                        return {...node, isSelected: true};
+                    } else {
+                        return {...node, isSelected: false};
+                    }
+                });
+            } else {
+                this.nodes = this.nodes.map(node => {
+                    if (node.isRoot) {
+                        return {...node, isSelected: true};
+                    } else {
+                        return {...node, isSelected: false};
+                    }
+                });
+            }
+        }
+
+        this.lastAddedNode = null;
     }
 
     setValue(id, value) {

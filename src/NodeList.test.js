@@ -81,6 +81,43 @@ describe('NodeList', () => {
         });
     });
 
+    describe('#cancelAddNode', () => {
+        it('should cancel adding a node and reset the selected node', () => {
+            nodeList.addNode(100, 100);
+            nodeList.setIsSelected('id-1');
+
+            nodeList.cancelAddNode();
+
+            expect(nodeList.nodes).toEqual([]);
+            expect(nodeList.selectedNode).toEqual(null);
+            expect(nodeList.selectedNodes).toEqual([]);
+        });
+
+        it('should set the selected node to the previously selected node', () => {
+            nodeList.addNode(100, 100);
+            nodeList.setIsNew('id-1', false);
+            nodeList.setIsSelected('id-1');
+            nodeList.addNode(100, 100);
+            nodeList.setIsSelected('id-2');
+
+            nodeList.cancelAddNode();
+
+            const expectedNode = {
+                id: 'id-1',
+                value: '',
+                isNew: false,
+                isRoot: true,
+                isSelected: true,
+                x: 100,
+                y: 100,
+                parents: []
+            };
+            expect(nodeList.nodes).toEqual([expectedNode]);
+            expect(nodeList.selectedNode).toEqual(expectedNode.id);
+            expect(nodeList.selectedNodes).toEqual([expectedNode.id]);
+        });
+    });
+
     it('should set the value of the node', () => {
         nodeList.addNode(100, 100);
 
