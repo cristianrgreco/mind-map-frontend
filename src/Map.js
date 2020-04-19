@@ -8,6 +8,7 @@ import dragImage from "./dragImage";
 /* todo
  *  - hotkeys and instructions (map in bottom right?)
  *  - when you load, we create a UUID, and changes are insta-saved
+ *  - cancel node edit when click away if there's text, cancel node otherwise
  */
 export function Map() {
     const [nodeList, setNodeList] = useState(new NodeList());
