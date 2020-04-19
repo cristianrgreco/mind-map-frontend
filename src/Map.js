@@ -5,7 +5,7 @@ import {Line} from "./Line";
 import {NodeList} from "./NodeList";
 
 /* todo
- *  - zoom in/out buttons
+ *  - implement panning instead of zooming
  *  - hotkeys and instructions (map in bottom right?)
  *  - when you load, we create a UUID, and changes are insta-saved
  */
