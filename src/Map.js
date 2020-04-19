@@ -7,7 +7,7 @@ import {NodeList} from "./NodeList";
 /* todo
  *  - zoom in/out buttons
  *  - hotkeys and instructions (map in bottom right?)
- *  - save/load/share
+ *  - when you load, we create a UUID, and changes are insta-saved
  */
 export function Map() {
     const [nodeList, setNodeList] = useState(new NodeList());
