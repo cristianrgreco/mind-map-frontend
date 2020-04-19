@@ -1,16 +1,22 @@
 export class NodeList {
 
-    constructor(idGenerator = () => `id-${Date.now()}`) {
+    constructor(
+        idGenerator = () => `id-${Date.now()}`,
+        nodes = [],
+        selectedNode = null,
+        selectedNodes = [],
+        lastAddedNode = null
+    ) {
         this.idGenerator = idGenerator;
-        this.nodes = [];
-        this.selectedNode = null; // todo is this needed? just last selected node
-        this.selectedNodes = [];
-        this.lastAddedNode = null;
+        this.nodes = nodes;
+        this.selectedNode = selectedNode; // todo is this needed? just last selected node
+        this.selectedNodes = selectedNodes;
+        this.lastAddedNode = lastAddedNode;
     }
 
     addNode(x, y) {
         if (this.nodes.some(node => node.isNew)) {
-            return;
+            return this;
         }
 
         const isOnlyNode = this._isOnlyNode();
@@ -27,38 +33,38 @@ export class NodeList {
             parent
         }
 
-        if (isOnlyNode) {
-            this.selectedNode = newNode.id;
-            this.selectedNodes = [newNode.id];
-        }
+        const nodes = [...this.nodes, newNode];
+        const selectedNode = isOnlyNode ? newNode.id : this.selectedNode;
+        const selectedNodes = isOnlyNode ? [newNode.id] : this.selectedNodes;
+        const lastAddedNode = newNode.id;
 
-        this.nodes = [...this.nodes, newNode];
-        this.lastAddedNode = newNode.id;
+        return new NodeList(this.idGenerator, nodes, selectedNode, selectedNodes, lastAddedNode);
     }
 
     cancelAddNode() {
         if (!this.lastAddedNode) {
-            return;
+            return this;
         }
 
-        this.nodes = this.nodes.filter(node => node.id !== this.lastAddedNode);
-        this.selectedNodes = this.selectedNodes.filter(node => node !== this.lastAddedNode);
+        let nodes = this.nodes.filter(node => node.id !== this.lastAddedNode);
+        let selectedNode = this.selectedNode;
+        let selectedNodes = this.selectedNodes.filter(node => node !== this.lastAddedNode);
 
         if (this.selectedNode === this.lastAddedNode) {
-            const lastSelectedNode = this._lastSelectedNode();
+            const lastSelectedNode = selectedNodes[selectedNodes.length - 1];
 
-            this.selectedNode = lastSelectedNode ? lastSelectedNode : null;
+            selectedNode = lastSelectedNode ? lastSelectedNode : null;
 
-            if (this.selectedNode) {
-                this.nodes = this.nodes.map(node => {
-                    if (node.id === this.selectedNode) {
+            if (selectedNode) {
+                nodes = nodes.map(node => {
+                    if (node.id === selectedNode) {
                         return {...node, isSelected: true};
                     } else {
                         return {...node, isSelected: false};
                     }
                 });
             } else {
-                this.nodes = this.nodes.map(node => {
+                nodes = nodes.map(node => {
                     if (node.isRoot) {
                         return {...node, isSelected: true};
                     } else {
@@ -68,28 +74,31 @@ export class NodeList {
             }
         }
 
-        this.lastAddedNode = null;
+        const lastAddedNode = null;
+
+        return new NodeList(this.idGenerator, nodes, selectedNode, selectedNodes, lastAddedNode);
     }
 
     removeNode(id) {
-        this.nodes = this.nodes.filter(node => node.id !== id);
-        this.selectedNodes = this.selectedNodes.filter(node => node !== id);
+        let nodes = this.nodes.filter(node => node.id !== id);
+        let selectedNode = this.selectedNode;
+        let selectedNodes = this.selectedNodes.filter(node => node !== id);
 
-        if (this.selectedNode === id) {
-            const lastSelectedNode = this._lastSelectedNode();
+        if (selectedNode === id) {
+            const lastSelectedNode = selectedNodes[selectedNodes.length - 1];
 
-            this.selectedNode = lastSelectedNode ? lastSelectedNode : null;
+            selectedNode = lastSelectedNode ? lastSelectedNode : null;
 
-            if (this.selectedNode) {
-                this.nodes = this.nodes.map(node => {
-                    if (node.id === this.selectedNode) {
+            if (selectedNode) {
+                nodes = nodes.map(node => {
+                    if (node.id === selectedNode) {
                         return {...node, isSelected: true};
                     } else {
                         return {...node, isSelected: false};
                     }
                 });
             } else {
-                this.nodes = this.nodes.map(node => {
+                nodes = nodes.map(node => {
                     if (node.isRoot) {
                         return {...node, isSelected: true};
                     } else {
@@ -99,47 +108,57 @@ export class NodeList {
             }
         }
 
-        this.nodes = this.nodes.map(node => {
+        nodes = nodes.map(node => {
             return {...node, parent: node.parent === id ? null : node.parent};
         });
 
-        this.nodes
-            .filter(node => !node.isRoot && node.parent === null)
-            .forEach(node => this.removeNode(node.id));
+        const orphanedNodes = nodes.filter(node => !node.isRoot && node.parent === null)
+
+        if (orphanedNodes.length === 0) {
+            return new NodeList(this.idGenerator, nodes, selectedNode, selectedNodes, this.lastAddedNode);
+        } else {
+            return orphanedNodes.reduce((prev, next) => prev.removeNode(next.id), new NodeList(this.idGenerator, nodes, selectedNode, selectedNodes, this.lastAddedNode));
+        }
     }
 
     setValue(id, value) {
-        this.nodes = this.nodes.map(node => {
+        const nodes = this.nodes.map(node => {
             if (node.id === id) {
                 return {...node, value};
             } else {
                 return node;
             }
         });
+
+        return new NodeList(this.idGenerator, nodes, this.selectedNode, this.selectedNodes, this.lastAddedNode);
     }
 
     setPosition(id, x, y) {
-        this.nodes = this.nodes.map(node => {
+        const nodes = this.nodes.map(node => {
             if (node.id === id) {
                 return {...node, x, y};
             } else {
                 return node;
             }
         });
+
+        return new NodeList(this.idGenerator, nodes, this.selectedNode, this.selectedNodes, this.lastAddedNode);
     }
 
     setIsNew(id, isNew) {
-        this.nodes = this.nodes.map(node => {
+        const nodes = this.nodes.map(node => {
             if (node.id === id) {
                 return {...node, isNew};
             } else {
                 return node;
             }
         });
+
+        return new NodeList(this.idGenerator, nodes, this.selectedNode, this.selectedNodes, this.lastAddedNode);
     }
 
     setIsSelected(id) {
-        this.nodes = this.nodes.map(node => {
+        const nodes = this.nodes.map(node => {
             if (node.id === id) {
                 return {...node, isSelected: true};
             } else {
@@ -147,11 +166,14 @@ export class NodeList {
             }
         });
 
-        this.selectedNode = id;
+        const selectedNode = id;
+        const selectedNodes = this._lastSelectedNode() !== id ? [...this.selectedNodes, id] : this.selectedNodes;
 
-        if (this._lastSelectedNode() !== id) {
-            this.selectedNodes = [...this.selectedNodes, id];
-        }
+        return new NodeList(this.idGenerator, nodes, selectedNode, selectedNodes, this.lastAddedNode);
+    }
+
+    findById(id) {
+        return this.nodes.find(node => node.id === id);
     }
 
     _isOnlyNode() {

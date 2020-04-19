@@ -2,52 +2,39 @@ import React, {Fragment, useState} from "react";
 import styles from './Map.module.css';
 import {Node} from "./Node";
 import {Line} from "./Line";
+import {NodeList} from "./NodeList";
 
 /* todo
  *   - hotkeys and instructions (map in bottom right?)
  */
-export function Map({ nodeListInstance }) {
+export function Map() {
+    const [nodeList, setNodeList] = useState(new NodeList());
 
-    // todo only state should be nodeList, it should return new instances and should be updated in the state
-    const [nodeList] = useState(nodeListInstance);
-    const [nodes, setNodes] = useState([]);
+    const addNode = e =>
+        setNodeList(nodeList.addNode(e.pageX, e.pageY));
 
-    const addNode = e => {
-        nodeList.addNode(e.pageX, e.pageY);
-        setNodes(nodeList.nodes);
-    };
+    const setValue = node => value =>
+        setNodeList(nodeList.setValue(node.id, value));
 
-    const setValue = node => value => {
-        nodeList.setValue(node.id, value);
-        setNodes(nodeList.nodes);
-    };
+    const setPosition = node => (x, y) =>
+        setNodeList(nodeList.setPosition(node.id, x, y));
 
-    const setPosition = node => (x, y) => {
-        nodeList.setPosition(node.id, x, y);
-        setNodes(nodeList.nodes);
-    }
+    const setIsNew = node => isNew =>
+        setNodeList(nodeList.setIsNew(node.id, isNew));
 
-    const setIsNew = node => isNew => {
-        nodeList.setIsNew(node.id, isNew);
-        setNodes(nodeList.nodes);
-    }
+    const setIsSelected = node => () =>
+        setNodeList(nodeList.setIsSelected(node.id));
 
-    const setIsSelected = node => () => {
-        nodeList.setIsSelected(node.id);
-        setNodes(nodeList.nodes);
-    }
+    const findParent = id =>
+        nodeList.nodes.find(node => node.id === id);
 
     const onKeyDown = e => {
         if (e.key === 'Backspace' || e.key === 'Delete') {
-            nodeList.removeNode(nodes.find(node => node.isSelected).id);
-            setNodes(nodeList.nodes);
+            setNodeList(nodeList.removeNode(nodeList.selectedNode));
         } else if (e.key === 'Escape') {
-            nodeList.cancelAddNode()
-            setNodes(nodeList.nodes);
+            setNodeList(nodeList.cancelAddNode());
         }
     };
-
-    const findParent = id => nodeList.nodes.find(node => node.id === id);
 
     return (
         <div className={styles.Map} onClick={addNode} onKeyDown={onKeyDown} tabIndex={0}>
