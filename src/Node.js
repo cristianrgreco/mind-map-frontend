@@ -17,7 +17,7 @@ export function Node({value, setValue, x, y, setPosition, isNew, setIsNew, isSel
 
     const onClick = e => {
         e.stopPropagation();
-        setIsSelected(true);
+        setIsSelected();
     };
 
     const onDoubleClick = e => {

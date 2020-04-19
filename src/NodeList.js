@@ -1,6 +1,6 @@
 export class NodeList {
 
-    constructor(idGenerator) {
+    constructor(idGenerator = () => `id-${Date.now()}`) {
         this.idGenerator = idGenerator;
         this.nodes = [];
         this.selectedNode = null; // todo is this needed? just last selected node
