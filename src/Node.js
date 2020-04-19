@@ -43,7 +43,10 @@ export function Node({value, setValue, x, y, setPosition, isNew, setIsNew, isSel
 
     const onDragEnd = e => {
         e.stopPropagation();
-        setPosition(e.pageX + dragOffset.x, e.pageY + dragOffset.y);
+
+        if (e.pageX) {
+            setPosition(e.pageX + dragOffset.x, e.pageY + dragOffset.y);
+        }
     };
 
     return (

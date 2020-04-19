@@ -25,8 +25,21 @@
     background-color: #ccc;
 }
 
-.Node.New {
-    border-style: dashed;
+.Node.New:before {
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    color: #ccc;
+    content: '*';
+    width: 14px;
+    height: 14px;
+    font: 20px sans-serif;
+}
+
+.Node.Selected.New:before {
+    color: #333;
 }
 
 .Node input {
