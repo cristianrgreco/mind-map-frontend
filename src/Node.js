@@ -1,13 +1,15 @@
-import React, {useState, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import AutosizeInput from 'react-input-autosize';
 import styles from './Node.module.css';
 
-export function Node({value, setValue, x, y, setPosition, isNew, setIsNew, isSelected, setIsSelected, isRoot}) {
+export function Node({value, setValue, x, y, setPosition, isNew, setIsNew, isSelected, setIsSelected, isRoot, setWidth, setHeight}) {
     const ref = useRef(null);
 
-    const [dragOffset, setDragOffset] = useState({x: 0, y: 0});
+    useEffect(() => {
+        setValue(value, ref.current.offsetWidth, ref.current.offsetHeight);
+    }, []);
 
-    const style = {left: `${x}px`, top: `${y}px`};
+    const [dragOffset, setDragOffset] = useState({x: 0, y: 0});
 
     const onKeyDown = e => {
         if (e.key !== 'Escape') {
@@ -19,7 +21,7 @@ export function Node({value, setValue, x, y, setPosition, isNew, setIsNew, isSel
     };
 
     const onValueChange = e => {
-        setValue(e.target.value)
+        setValue(e.target.value, ref.current.offsetWidth, ref.current.offsetHeight);
     };
 
     const onClick = e => {
@@ -46,12 +48,13 @@ export function Node({value, setValue, x, y, setPosition, isNew, setIsNew, isSel
     };
 
     return (
-        <div ref={ref}
-             className={`${styles.Node} ${isSelected && styles.Selected} ${isNew && styles.New} ${isRoot && styles.Root}`}
-             style={style}
-             onClick={onClick}
-             onDoubleClick={onDoubleClick}
-             draggable={true} onDragStart={onDragStart} onDrag={onDragEnd} onDragEnd={onDragEnd}>
+        <div
+            ref={ref}
+            className={`${styles.Node} ${isSelected && styles.Selected} ${isNew && styles.New} ${isRoot && styles.Root}`}
+            style={{left: `${x}px`, top: `${y}px`}}
+            onClick={onClick}
+            onDoubleClick={onDoubleClick}
+            draggable={true} onDragStart={onDragStart} onDrag={onDragEnd} onDragEnd={onDragEnd}>
 
             {!isNew
                 ? <span>{value}</span>

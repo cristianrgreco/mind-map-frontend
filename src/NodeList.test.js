@@ -14,16 +14,7 @@ describe('NodeList', () => {
         it('should add a new node and select it if it is the only node', () => {
             const result = nodeList.addNode(100, 100);
 
-            const expectedNode = {
-                id: 'id-1',
-                value: '',
-                isNew: true,
-                isRoot: true,
-                isSelected: true,
-                x: 100,
-                y: 100,
-                parent: null
-            };
+            const expectedNode = aNode();
             expect(result.nodes).toEqual([expectedNode]);
             expect(result.selectedNodes).toEqual([expectedNode.id]);
         })
@@ -35,26 +26,8 @@ describe('NodeList', () => {
 
             const result = setup.addNode(100, 100);
 
-            const expectedNode1 = {
-                id: 'id-1',
-                value: '',
-                isNew: false,
-                isRoot: true,
-                isSelected: true,
-                x: 100,
-                y: 100,
-                parent: null
-            };
-            const expectedNode2 = {
-                id: 'id-2',
-                value: '',
-                isNew: true,
-                isRoot: false,
-                isSelected: false,
-                x: 100,
-                y: 100,
-                parent: expectedNode1.id
-            };
+            const expectedNode1 = aNode({isNew: false});
+            const expectedNode2 = aNode({id: 'id-2', isRoot: false, isSelected: false, parent: expectedNode1.id});
             expect(result.nodes).toEqual([expectedNode1, expectedNode2]);
             expect(result.selectedNodes).toEqual([expectedNode1.id]);
         });
@@ -64,16 +37,7 @@ describe('NodeList', () => {
 
             const result = setup.addNode(100, 100);
 
-            const expectedNode = {
-                id: 'id-1',
-                value: '',
-                isNew: true,
-                isRoot: true,
-                isSelected: true,
-                x: 100,
-                y: 100,
-                parent: null
-            };
+            const expectedNode = aNode();
             expect(result.nodes).toEqual([expectedNode]);
             expect(result.selectedNodes).toEqual([expectedNode.id]);
         });
@@ -98,16 +62,7 @@ describe('NodeList', () => {
 
             const result = setup.cancelAddNode();
 
-            const expectedNode = {
-                id: 'id-1',
-                value: '',
-                isNew: false,
-                isRoot: true,
-                isSelected: true,
-                x: 100,
-                y: 100,
-                parent: null
-            };
+            const expectedNode = aNode({isNew: false});
             expect(result.nodes).toEqual([expectedNode]);
             expect(result.selectedNodes).toEqual([expectedNode.id]);
         });
@@ -135,16 +90,7 @@ describe('NodeList', () => {
 
             const result = setup.removeNode('id-2');
 
-            const expectedNode = {
-                id: 'id-1',
-                value: '',
-                isNew: false,
-                isRoot: true,
-                isSelected: true,
-                x: 100,
-                y: 100,
-                parent: null
-            };
+            const expectedNode = aNode({isNew: false});
             expect(result.nodes).toEqual([expectedNode]);
             expect(result.selectedNodes).toEqual([expectedNode.id]);
         });
@@ -162,36 +108,18 @@ describe('NodeList', () => {
                 .setIsNew('id-3', false)
                 .removeNode('id-2')
 
-            const expectedNode = {
-                id: 'id-1',
-                value: '',
-                isNew: false,
-                isRoot: true,
-                isSelected: true,
-                x: 100,
-                y: 100,
-                parent: null
-            };
+            const expectedNode = aNode({isNew: false});
             expect(result.nodes).toEqual([expectedNode]);
             expect(result.selectedNodes).toEqual([expectedNode.id]);
         });
     });
 
-    it('should set the value of the node', () => {
+    it('should set the value, width and height of the node', () => {
         const setup = nodeList.addNode(100, 100);
 
-        const result = setup.setValue('id-1', 'value');
+        const result = setup.setValue('id-1', 'value', 100, 200);
 
-        const expectedNode = {
-            id: 'id-1',
-            value: 'value',
-            isNew: true,
-            isRoot: true,
-            isSelected: true,
-            x: 100,
-            y: 100,
-            parent: null
-        };
+        const expectedNode = aNode({value: 'value', width: 100, height: 200});
         expect(result.nodes).toEqual([expectedNode]);
     });
 
@@ -200,16 +128,7 @@ describe('NodeList', () => {
 
         const result = setup.setPosition('id-1', 200, 200);
 
-        const expectedNode = {
-            id: 'id-1',
-            value: '',
-            isNew: true,
-            isRoot: true,
-            isSelected: true,
-            x: 200,
-            y: 200,
-            parent: null
-        };
+        const expectedNode = aNode({isNew: true, x: 200, y: 200});
         expect(result.nodes).toEqual([expectedNode]);
     });
 
@@ -218,16 +137,7 @@ describe('NodeList', () => {
 
         const result = setup.setIsNew('id-1', false);
 
-        const expectedNode = {
-            id: 'id-1',
-            value: '',
-            isNew: false,
-            isRoot: true,
-            isSelected: true,
-            x: 100,
-            y: 100,
-            parent: null
-        };
+        const expectedNode = aNode({isNew: false});
         expect(result.nodes).toEqual([expectedNode]);
     });
 
@@ -240,26 +150,8 @@ describe('NodeList', () => {
 
             const result = setup.setIsSelected('id-2');
 
-            const expectedNode1 = {
-                id: 'id-1',
-                value: '',
-                isNew: false,
-                isRoot: true,
-                isSelected: false,
-                x: 100,
-                y: 100,
-                parent: null
-            };
-            const expectedNode2 = {
-                id: 'id-2',
-                value: '',
-                isNew: true,
-                isRoot: false,
-                isSelected: true,
-                x: 100,
-                y: 100,
-                parent: 'id-1'
-            };
+            const expectedNode1 = aNode({isNew: false, isSelected: false});
+            const expectedNode2 = aNode({id: 'id-2', isRoot: false, parent: 'id-1'});
             expect(result.nodes).toEqual([expectedNode1, expectedNode2]);
             expect(result.selectedNodes).toEqual(['id-1', 'id-2']);
         });
@@ -284,16 +176,7 @@ describe('NodeList', () => {
 
         const result = setup.findById('id-1');
 
-        const expectedNode = {
-            id: 'id-1',
-            value: '',
-            isNew: true,
-            isRoot: true,
-            isSelected: true,
-            x: 100,
-            y: 100,
-            parent: null
-        };
+        const expectedNode = aNode();
         expect(result).toEqual(expectedNode);
     });
 
@@ -306,3 +189,20 @@ describe('NodeList', () => {
         expect(result).toEqual('id-1');
     });
 });
+
+function aNode(overrides) {
+    const node = {
+        id: 'id-1',
+        value: '',
+        isNew: true,
+        isRoot: true,
+        isSelected: true,
+        x: 100,
+        y: 100,
+        width: 0,
+        height: 0,
+        parent: null
+    };
+
+    return {...node, ...overrides};
+}

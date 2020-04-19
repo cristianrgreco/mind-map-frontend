@@ -28,6 +28,8 @@ export class NodeList {
             isSelected: isOnlyNode,
             x,
             y,
+            width: 0,
+            height: 0,
             parent
         }
 
@@ -121,10 +123,10 @@ export class NodeList {
         }
     }
 
-    setValue(id, value) {
+    setValue(id, value, width, height) {
         const nodes = this.nodes.map(node => {
             if (node.id === id) {
-                return {...node, value};
+                return {...node, value, width, height};
             } else {
                 return node;
             }
