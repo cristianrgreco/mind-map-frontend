@@ -20,6 +20,10 @@
     border-width: 3px;
 }
 
+.Node.Root input {
+    font-weight: bold;
+}
+
 .Node.Selected {
     color: #333;
     background-color: #ccc;

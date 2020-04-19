@@ -9,6 +9,7 @@ import dragImage from "./dragImage";
  *  - hotkeys and instructions (map in bottom right?)
  *  - when you load, we create a UUID, and changes are insta-saved
  *  - cancel node edit when click away if there's text, cancel node otherwise
+ *  - double clicking node doesn't select it
  */
 export function Map() {
     const [nodeList, setNodeList] = useState(new NodeList());
@@ -84,7 +85,8 @@ export function Map() {
                                 {!node.isRoot && (
                                     <Line
                                         from={{x: node.x, y: node.y, w: node.width, h: node.height}}
-                                        to={{x: parent.x, y: parent.y, w: parent.width, h: parent.height}}/>
+                                        to={{x: parent.x, y: parent.y, w: parent.width, h: parent.height}}
+                                    />
                                 )}
                             </Fragment>
                         );
