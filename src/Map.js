@@ -24,7 +24,7 @@ export function Map() {
         setNodeList(nodeList.setPosition(node.id, x, y));
 
     const setIsNew = node => isNew =>
-        setNodeList(nodeList.setIsNew(node.id, isNew));
+        setNodeList(nodeList.setIsNew(node.id, isNew).setIsSelected(node.id));
 
     const setIsSelected = node => () =>
         setNodeList(nodeList.setIsSelected(node.id));
@@ -45,7 +45,7 @@ export function Map() {
     const onDrag = e => {
         e.preventDefault();
 
-        if (e.pageX) {
+        if (e.pageX && e.pageY) {
             setPan({x: e.pageX + startPan.x, y: e.pageY + startPan.y});
         }
     };

@@ -43,11 +43,10 @@ export function Node({value, setValue, x, y, setPosition, isNew, setIsNew, isSel
         setDragOffset({x: x - e.pageX, y: y - e.pageY});
     };
 
-    // todo quick drag makes it go to 0,0
     const onDrag = e => {
         e.stopPropagation();
 
-        if (e.pageX) {
+        if (e.pageX && e.pageY) {
             setPosition(e.pageX + dragOffset.x, e.pageY + dragOffset.y);
         }
     };
