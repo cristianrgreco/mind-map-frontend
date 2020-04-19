@@ -30,7 +30,7 @@ export function Map() {
 
     const onKeyDown = e => {
         if (e.key === 'Backspace' || e.key === 'Delete') {
-            setNodeList(nodeList.removeNode(nodeList.selectedNode));
+            setNodeList(nodeList.removeNode(nodeList.findSelectedNode()));
         } else if (e.key === 'Escape') {
             setNodeList(nodeList.cancelAddNode());
         }

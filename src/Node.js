@@ -17,7 +17,10 @@ export function Node({value, setValue, x, y, setPosition, isNew, setIsNew, isSel
 
     const onClick = e => {
         e.stopPropagation();
-        setIsSelected();
+
+        if (!isNew) {
+            setIsSelected();
+        }
     };
 
     const onDoubleClick = e => {
@@ -33,7 +36,7 @@ export function Node({value, setValue, x, y, setPosition, isNew, setIsNew, isSel
     };
 
     return (
-        <div className={`${styles.Node} ${isSelected && styles.Selected}`}
+        <div className={`${styles.Node} ${isSelected && styles.Selected} ${isNew && styles.New}`}
              style={style}
              onClick={onClick}
              onDoubleClick={onDoubleClick}

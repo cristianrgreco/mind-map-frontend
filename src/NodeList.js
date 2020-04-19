@@ -3,13 +3,11 @@ export class NodeList {
     constructor(
         idGenerator = () => `id-${Date.now()}`,
         nodes = [],
-        selectedNode = null,
         selectedNodes = [],
         lastAddedNode = null
     ) {
         this.idGenerator = idGenerator;
         this.nodes = nodes;
-        this.selectedNode = selectedNode; // todo is this needed? just last selected node
         this.selectedNodes = selectedNodes;
         this.lastAddedNode = lastAddedNode;
     }
@@ -20,7 +18,7 @@ export class NodeList {
         }
 
         const isOnlyNode = this._isOnlyNode();
-        const parent = this.selectedNode ? this.selectedNode : null;
+        const parent = this.selectedNodes.length ? this.findSelectedNode() : null;
 
         const newNode = {
             id: this.idGenerator(),
@@ -34,11 +32,10 @@ export class NodeList {
         }
 
         const nodes = [...this.nodes, newNode];
-        const selectedNode = isOnlyNode ? newNode.id : this.selectedNode;
         const selectedNodes = isOnlyNode ? [newNode.id] : this.selectedNodes;
         const lastAddedNode = newNode.id;
 
-        return new NodeList(this.idGenerator, nodes, selectedNode, selectedNodes, lastAddedNode);
+        return new NodeList(this.idGenerator, nodes, selectedNodes, lastAddedNode);
     }
 
     cancelAddNode() {
@@ -47,10 +44,10 @@ export class NodeList {
         }
 
         let nodes = this.nodes.filter(node => node.id !== this.lastAddedNode);
-        let selectedNode = this.selectedNode;
+        let selectedNode = this.findSelectedNode()
         let selectedNodes = this.selectedNodes.filter(node => node !== this.lastAddedNode);
 
-        if (this.selectedNode === this.lastAddedNode) {
+        if (selectedNode === this.lastAddedNode) {
             const lastSelectedNode = selectedNodes[selectedNodes.length - 1];
 
             selectedNode = lastSelectedNode ? lastSelectedNode : null;
@@ -76,12 +73,12 @@ export class NodeList {
 
         const lastAddedNode = null;
 
-        return new NodeList(this.idGenerator, nodes, selectedNode, selectedNodes, lastAddedNode);
+        return new NodeList(this.idGenerator, nodes, selectedNodes, lastAddedNode);
     }
 
     removeNode(id) {
         let nodes = this.nodes.filter(node => node.id !== id);
-        let selectedNode = this.selectedNode;
+        let selectedNode = this.findSelectedNode();
         let selectedNodes = this.selectedNodes.filter(node => node !== id);
 
         if (selectedNode === id) {
@@ -115,9 +112,12 @@ export class NodeList {
         const orphanedNodes = nodes.filter(node => !node.isRoot && node.parent === null)
 
         if (orphanedNodes.length === 0) {
-            return new NodeList(this.idGenerator, nodes, selectedNode, selectedNodes, this.lastAddedNode);
+            return new NodeList(this.idGenerator, nodes, selectedNodes, this.lastAddedNode);
         } else {
-            return orphanedNodes.reduce((prev, next) => prev.removeNode(next.id), new NodeList(this.idGenerator, nodes, selectedNode, selectedNodes, this.lastAddedNode));
+            return orphanedNodes.reduce(
+                (prev, next) => prev.removeNode(next.id),
+                new NodeList(this.idGenerator, nodes, selectedNodes, this.lastAddedNode)
+            );
         }
     }
 
@@ -130,7 +130,7 @@ export class NodeList {
             }
         });
 
-        return new NodeList(this.idGenerator, nodes, this.selectedNode, this.selectedNodes, this.lastAddedNode);
+        return new NodeList(this.idGenerator, nodes, this.selectedNodes, this.lastAddedNode);
     }
 
     setPosition(id, x, y) {
@@ -142,7 +142,7 @@ export class NodeList {
             }
         });
 
-        return new NodeList(this.idGenerator, nodes, this.selectedNode, this.selectedNodes, this.lastAddedNode);
+        return new NodeList(this.idGenerator, nodes, this.selectedNodes, this.lastAddedNode);
     }
 
     setIsNew(id, isNew) {
@@ -154,7 +154,7 @@ export class NodeList {
             }
         });
 
-        return new NodeList(this.idGenerator, nodes, this.selectedNode, this.selectedNodes, this.lastAddedNode);
+        return new NodeList(this.idGenerator, nodes, this.selectedNodes, this.lastAddedNode);
     }
 
     setIsSelected(id) {
@@ -166,21 +166,20 @@ export class NodeList {
             }
         });
 
-        const selectedNode = id;
-        const selectedNodes = this._lastSelectedNode() !== id ? [...this.selectedNodes, id] : this.selectedNodes;
+        const selectedNodes = this.findSelectedNode() !== id ? [...this.selectedNodes, id] : this.selectedNodes;
 
-        return new NodeList(this.idGenerator, nodes, selectedNode, selectedNodes, this.lastAddedNode);
+        return new NodeList(this.idGenerator, nodes, selectedNodes, this.lastAddedNode);
     }
 
     findById(id) {
         return this.nodes.find(node => node.id === id);
     }
 
-    _isOnlyNode() {
-        return this.nodes.length === 0;
+    findSelectedNode() {
+        return this.selectedNodes[this.selectedNodes.length - 1];
     }
 
-    _lastSelectedNode() {
-        return this.selectedNodes[this.selectedNodes.length - 1];
+    _isOnlyNode() {
+        return this.nodes.length === 0;
     }
 }

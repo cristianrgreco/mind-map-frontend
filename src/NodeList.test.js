@@ -25,7 +25,6 @@ describe('NodeList', () => {
                 parent: null
             };
             expect(result.nodes).toEqual([expectedNode]);
-            expect(result.selectedNode).toEqual(expectedNode.id);
             expect(result.selectedNodes).toEqual([expectedNode.id]);
         })
 
@@ -57,7 +56,6 @@ describe('NodeList', () => {
                 parent: expectedNode1.id
             };
             expect(result.nodes).toEqual([expectedNode1, expectedNode2]);
-            expect(result.selectedNode).toEqual(expectedNode1.id);
             expect(result.selectedNodes).toEqual([expectedNode1.id]);
         });
 
@@ -77,7 +75,6 @@ describe('NodeList', () => {
                 parent: null
             };
             expect(result.nodes).toEqual([expectedNode]);
-            expect(result.selectedNode).toEqual(expectedNode.id);
             expect(result.selectedNodes).toEqual([expectedNode.id]);
         });
     });
@@ -89,7 +86,6 @@ describe('NodeList', () => {
             const result = setup.cancelAddNode();
 
             expect(result.nodes).toEqual([]);
-            expect(result.selectedNode).toEqual(null);
             expect(result.selectedNodes).toEqual([]);
         });
 
@@ -113,7 +109,6 @@ describe('NodeList', () => {
                 parent: null
             };
             expect(result.nodes).toEqual([expectedNode]);
-            expect(result.selectedNode).toEqual(expectedNode.id);
             expect(result.selectedNodes).toEqual([expectedNode.id]);
         });
     });
@@ -127,7 +122,6 @@ describe('NodeList', () => {
             const result = setup.removeNode('id-1');
 
             expect(result.nodes).toEqual([]);
-            expect(result.selectedNode).toEqual(null);
             expect(result.selectedNodes).toEqual([]);
         });
 
@@ -152,7 +146,6 @@ describe('NodeList', () => {
                 parent: null
             };
             expect(result.nodes).toEqual([expectedNode]);
-            expect(result.selectedNode).toEqual(expectedNode.id);
             expect(result.selectedNodes).toEqual([expectedNode.id]);
         });
 
@@ -180,7 +173,6 @@ describe('NodeList', () => {
                 parent: null
             };
             expect(result.nodes).toEqual([expectedNode]);
-            expect(result.selectedNode).toEqual(expectedNode.id);
             expect(result.selectedNodes).toEqual([expectedNode.id]);
         });
     });
@@ -269,7 +261,6 @@ describe('NodeList', () => {
                 parent: 'id-1'
             };
             expect(result.nodes).toEqual([expectedNode1, expectedNode2]);
-            expect(result.selectedNode).toEqual('id-2');
             expect(result.selectedNodes).toEqual(['id-1', 'id-2']);
         });
 
@@ -304,5 +295,14 @@ describe('NodeList', () => {
             parent: null
         };
         expect(result).toEqual(expectedNode);
+    });
+
+    it('should return the selected node', () => {
+        const setup = nodeList
+            .addNode(100, 100)
+
+        const result = setup.findSelectedNode('id-1');
+
+        expect(result).toEqual('id-1');
     });
 });
