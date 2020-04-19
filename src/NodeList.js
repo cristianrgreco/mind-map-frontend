@@ -1,8 +1,9 @@
 export class NodeList {
+
     constructor(idGenerator) {
         this.idGenerator = idGenerator;
         this.nodes = [];
-        this.selectedNode = null;
+        this.selectedNode = null; // todo is this needed? just last selected node
         this.selectedNodes = [];
         this.lastAddedNode = null;
     }
@@ -13,7 +14,7 @@ export class NodeList {
         }
 
         const isOnlyNode = this._isOnlyNode();
-        const parents = this.selectedNode ? [this.selectedNode] : [];
+        const parent = this.selectedNode ? this.selectedNode : null;
 
         const newNode = {
             id: this.idGenerator(),
@@ -23,7 +24,7 @@ export class NodeList {
             isSelected: isOnlyNode,
             x,
             y,
-            parents
+            parent
         }
 
         if (isOnlyNode) {
@@ -68,6 +69,43 @@ export class NodeList {
         }
 
         this.lastAddedNode = null;
+    }
+
+    removeNode(id) {
+        this.nodes = this.nodes.filter(node => node.id !== id);
+        this.selectedNodes = this.selectedNodes.filter(node => node !== id);
+
+        if (this.selectedNode === id) {
+            const lastSelectedNode = this._lastSelectedNode();
+
+            this.selectedNode = lastSelectedNode ? lastSelectedNode : null;
+
+            if (this.selectedNode) {
+                this.nodes = this.nodes.map(node => {
+                    if (node.id === this.selectedNode) {
+                        return {...node, isSelected: true};
+                    } else {
+                        return {...node, isSelected: false};
+                    }
+                });
+            } else {
+                this.nodes = this.nodes.map(node => {
+                    if (node.isRoot) {
+                        return {...node, isSelected: true};
+                    } else {
+                        return {...node, isSelected: false};
+                    }
+                });
+            }
+        }
+
+        this.nodes = this.nodes.map(node => {
+            return {...node, parent: node.parent === id ? null : node.parent};
+        });
+
+        this.nodes
+            .filter(node => !node.isRoot && node.parent === null)
+            .forEach(node => this.removeNode(node.id));
     }
 
     setValue(id, value) {

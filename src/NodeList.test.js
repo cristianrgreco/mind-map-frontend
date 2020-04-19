@@ -22,7 +22,7 @@ describe('NodeList', () => {
                 isSelected: true,
                 x: 100,
                 y: 100,
-                parents: []
+                parent: null
             };
             expect(nodeList.nodes).toEqual([expectedNode]);
             expect(nodeList.selectedNode).toEqual(expectedNode.id);
@@ -43,7 +43,7 @@ describe('NodeList', () => {
                 isSelected: true,
                 x: 100,
                 y: 100,
-                parents: []
+                parent: null
             };
             const expectedNode2 = {
                 id: 'id-2',
@@ -53,7 +53,7 @@ describe('NodeList', () => {
                 isSelected: false,
                 x: 100,
                 y: 100,
-                parents: [expectedNode1.id]
+                parent: expectedNode1.id
             };
             expect(nodeList.nodes).toEqual([expectedNode1, expectedNode2]);
             expect(nodeList.selectedNode).toEqual(expectedNode1.id);
@@ -73,7 +73,7 @@ describe('NodeList', () => {
                 isSelected: true,
                 x: 100,
                 y: 100,
-                parents: []
+                parent: null
             };
             expect(nodeList.nodes).toEqual([expectedNode]);
             expect(nodeList.selectedNode).toEqual(expectedNode.id);
@@ -84,7 +84,6 @@ describe('NodeList', () => {
     describe('#cancelAddNode', () => {
         it('should cancel adding a node and reset the selected node', () => {
             nodeList.addNode(100, 100);
-            nodeList.setIsSelected('id-1');
 
             nodeList.cancelAddNode();
 
@@ -96,7 +95,6 @@ describe('NodeList', () => {
         it('should set the selected node to the previously selected node', () => {
             nodeList.addNode(100, 100);
             nodeList.setIsNew('id-1', false);
-            nodeList.setIsSelected('id-1');
             nodeList.addNode(100, 100);
             nodeList.setIsSelected('id-2');
 
@@ -110,7 +108,70 @@ describe('NodeList', () => {
                 isSelected: true,
                 x: 100,
                 y: 100,
-                parents: []
+                parent: null
+            };
+            expect(nodeList.nodes).toEqual([expectedNode]);
+            expect(nodeList.selectedNode).toEqual(expectedNode.id);
+            expect(nodeList.selectedNodes).toEqual([expectedNode.id]);
+        });
+    });
+
+    describe('#removeNode', () => {
+        it('should remove a node and reset the selected node', () => {
+            nodeList.addNode(100, 100);
+            nodeList.setIsNew('id-1', false);
+
+            nodeList.removeNode('id-1');
+
+            expect(nodeList.nodes).toEqual([]);
+            expect(nodeList.selectedNode).toEqual(null);
+            expect(nodeList.selectedNodes).toEqual([]);
+        });
+
+        it('should set the selected node to the previously selected node', () => {
+            nodeList.addNode(100, 100);
+            nodeList.setIsNew('id-1', false);
+            nodeList.addNode(100, 100);
+            nodeList.setIsNew('id-2', false);
+            nodeList.setIsSelected('id-2');
+
+            nodeList.removeNode('id-2');
+
+            const expectedNode = {
+                id: 'id-1',
+                value: '',
+                isNew: false,
+                isRoot: true,
+                isSelected: true,
+                x: 100,
+                y: 100,
+                parent: null
+            };
+            expect(nodeList.nodes).toEqual([expectedNode]);
+            expect(nodeList.selectedNode).toEqual(expectedNode.id);
+            expect(nodeList.selectedNodes).toEqual([expectedNode.id]);
+        });
+
+        it('should also remove orphaned nodes', () => {
+            nodeList.addNode(100, 100);
+            nodeList.setIsNew('id-1', false);
+            nodeList.addNode(100, 100);
+            nodeList.setIsNew('id-2', false);
+
+            nodeList.setIsSelected('id-2');
+            nodeList.addNode(100, 100);
+            nodeList.setIsNew('id-3', false);
+            nodeList.removeNode('id-2');
+
+            const expectedNode = {
+                id: 'id-1',
+                value: '',
+                isNew: false,
+                isRoot: true,
+                isSelected: true,
+                x: 100,
+                y: 100,
+                parent: null
             };
             expect(nodeList.nodes).toEqual([expectedNode]);
             expect(nodeList.selectedNode).toEqual(expectedNode.id);
@@ -131,7 +192,7 @@ describe('NodeList', () => {
             isSelected: true,
             x: 100,
             y: 100,
-            parents: []
+            parent: null
         };
         expect(nodeList.nodes).toEqual([expectedNode]);
     });
@@ -149,7 +210,7 @@ describe('NodeList', () => {
             isSelected: true,
             x: 200,
             y: 200,
-            parents: []
+            parent: null
         };
         expect(nodeList.nodes).toEqual([expectedNode]);
     });
@@ -167,7 +228,7 @@ describe('NodeList', () => {
             isSelected: true,
             x: 100,
             y: 100,
-            parents: []
+            parent: null
         };
         expect(nodeList.nodes).toEqual([expectedNode]);
     });
@@ -188,7 +249,7 @@ describe('NodeList', () => {
                 isSelected: false,
                 x: 100,
                 y: 100,
-                parents: []
+                parent: null
             };
             const expectedNode2 = {
                 id: 'id-2',
@@ -198,7 +259,7 @@ describe('NodeList', () => {
                 isSelected: true,
                 x: 100,
                 y: 100,
-                parents: ['id-1']
+                parent: 'id-1'
             };
             expect(nodeList.nodes).toEqual([expectedNode1, expectedNode2]);
             expect(nodeList.selectedNode).toEqual('id-2');
