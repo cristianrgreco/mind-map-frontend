@@ -19,18 +19,22 @@
     background-color: #53532c;
 }
 
-.Node.New:before {
-    margin: 0;
-    padding: 0;
-    position: absolute;
-    top: 0;
-    right: 0;
-    color: #ccc;
-    content: '*';
-    width: 14px;
-    height: 14px;
-    font: 20px sans-serif;
+.Node.New {
+    border-style: dashed;
 }
+
+/*.Node.New:before {*/
+/*    margin: 0;*/
+/*    padding: 0;*/
+/*    position: absolute;*/
+/*    top: 0;*/
+/*    right: 0;*/
+/*    color: #ccc;*/
+/*    content: '*';*/
+/*    width: 14px;*/
+/*    height: 14px;*/
+/*    font: 20px sans-serif;*/
+/*}*/
 
 .Node input {
     margin: 0;

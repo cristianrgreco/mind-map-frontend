@@ -38,22 +38,25 @@ export function Map() {
 
     return (
         <div className={styles.Map} onClick={addNode} onKeyDown={onKeyDown} tabIndex={0}>
-            {nodeList.nodes.map(node => (
-                <Fragment key={node.id}>
-                    <Node
-                        value={node.value}
-                        setValue={setValue(node)}
-                        x={node.x}
-                        y={node.y}
-                        setPosition={setPosition(node)}
-                        isNew={node.isNew}
-                        setIsNew={setIsNew(node)}
-                        isSelected={node.isSelected}
-                        setIsSelected={setIsSelected(node)}
-                    />
-                    {!node.isRoot && <Line from={node} to={findParent(node.parent)}/>}
-                </Fragment>
-            ))}
+            {nodeList.nodes.length === 0
+                ? <div className={styles.Start}>Click anywhere to start</div>
+                : nodeList.nodes.map(node => (
+                    <Fragment key={node.id}>
+                        <Node
+                            value={node.value}
+                            setValue={setValue(node)}
+                            x={node.x}
+                            y={node.y}
+                            setPosition={setPosition(node)}
+                            isNew={node.isNew}
+                            setIsNew={setIsNew(node)}
+                            isSelected={node.isSelected}
+                            setIsSelected={setIsSelected(node)}
+                        />
+                        {!node.isRoot && <Line from={node} to={findParent(node.parent)}/>}
+                    </Fragment>
+                ))
+            }
         </div>
     );
 }
