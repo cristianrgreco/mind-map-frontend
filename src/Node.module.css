@@ -15,6 +15,9 @@
     cursor: move;
 }
 
+.Node.Root {
+}
+
 .Node.Selected {
     color: #333;
     background-color: #ccc;

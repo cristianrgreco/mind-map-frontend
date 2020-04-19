@@ -61,7 +61,6 @@ export function Node({value, setValue, x, y, setPosition, isNew, setIsNew, isSel
             {!isNew
                 ? <span>{value}</span>
                 : <AutosizeInput
-                    className={styles.Input}
                     name={value}
                     value={value}
                     autoFocus={true}
