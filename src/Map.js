@@ -7,7 +7,6 @@ import dragImage from "./dragImage";
 import {Legend} from "./Legend";
 
 /* todo
- *  - hotkeys and instructions (map in bottom right?)
  *  - when you load, we create a UUID, and changes are insta-saved
  *  - cancel node edit when click away if there's text, cancel node otherwise
  *  - double clicking node doesn't select it
