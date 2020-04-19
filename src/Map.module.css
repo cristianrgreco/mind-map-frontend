@@ -5,6 +5,7 @@
     cursor: grab;
 }
 
+/* todo always center of viewport: pan right, create node, delete node, it's to the left */
 .Map .Start {
     font: 28px sans-serif;
     color: #ccc;

@@ -3,9 +3,9 @@ import styles from './Map.module.css';
 import {Node} from "./Node";
 import {Line} from "./Line";
 import {NodeList} from "./NodeList";
+import dragImage from "./dragImage";
 
 /* todo
- *  - implement panning instead of zooming
  *  - hotkeys and instructions (map in bottom right?)
  *  - when you load, we create a UUID, and changes are insta-saved
  */
@@ -38,7 +38,7 @@ export function Map() {
     };
 
     const onDragStart = e => {
-        console.log('start', e);
+        e.dataTransfer.setDragImage(dragImage, 0, 0);
         setStartPan({x: pan.x - e.pageX, y: pan.y - e.pageY});
     };
 

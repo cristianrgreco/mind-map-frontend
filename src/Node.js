@@ -1,6 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import AutosizeInput from 'react-input-autosize';
 import styles from './Node.module.css';
+import dragImage from "./dragImage";
 
 export function Node({value, setValue, x, y, setPosition, isNew, setIsNew, isSelected, setIsSelected, isRoot}) {
     const ref = useRef(null);
@@ -38,9 +39,11 @@ export function Node({value, setValue, x, y, setPosition, isNew, setIsNew, isSel
     };
 
     const onDragStart = e => {
+        e.dataTransfer.setDragImage(dragImage, 0, 0);
         setDragOffset({x: x - e.pageX, y: y - e.pageY});
     };
 
+    // todo quick drag makes it go to 0,0
     const onDrag = e => {
         e.stopPropagation();
 
