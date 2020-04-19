@@ -25,9 +25,6 @@ export function Map() {
     const setIsSelected = node => () =>
         setNodeList(nodeList.setIsSelected(node.id));
 
-    const findParent = id =>
-        nodeList.nodes.find(node => node.id === id);
-
     const onKeyDown = e => {
         if (e.key === 'Backspace' || e.key === 'Delete') {
             setNodeList(nodeList.removeNode(nodeList.findSelectedNode()));
@@ -54,7 +51,7 @@ export function Map() {
                             setIsSelected={setIsSelected(node)}
                             isRoot={node.isRoot}
                         />
-                        {!node.isRoot && <Line from={node} to={findParent(node.parent)}/>}
+                        {!node.isRoot && <Line from={node} to={nodeList.findById(node.parent)}/>}
                     </Fragment>
                 ))
             }
