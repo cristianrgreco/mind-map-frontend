@@ -29,7 +29,7 @@ export function Map() {
 
     const onKeyDown = e => {
         if (e.key === 'Backspace' || e.key === 'Delete') {
-            setNodeList(nodeList.removeNode(nodeList.findSelectedNode()));
+            setNodeList(nodeList.removeNode(nodeList.getSelectedNode()));
         } else if (e.key === 'Escape') {
             setNodeList(nodeList.cancelAddNode());
         }
@@ -42,7 +42,7 @@ export function Map() {
             {nodeList.nodes.length === 0
                 ? <div className={styles.Start}>Click anywhere to start</div>
                 : nodeList.nodes.map(node => {
-                    const parent = nodeList.findById(node.parent);
+                    const parent = nodeList.getNode(node.parent);
                     return (
                         <Fragment key={node.id}>
                             <Node

@@ -174,7 +174,7 @@ describe('NodeList', () => {
         const setup = nodeList
             .addNode(100, 100)
 
-        const result = setup.findById('id-1');
+        const result = setup.getNode('id-1');
 
         const expectedNode = aNode();
         expect(result).toEqual(expectedNode);
@@ -184,7 +184,7 @@ describe('NodeList', () => {
         const setup = nodeList
             .addNode(100, 100)
 
-        const result = setup.findSelectedNode('id-1');
+        const result = setup.getSelectedNode();
 
         expect(result).toEqual('id-1');
     });

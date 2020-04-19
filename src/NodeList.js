@@ -18,7 +18,7 @@ export class NodeList {
         }
 
         const isOnlyNode = this._isOnlyNode();
-        const parent = this.selectedNodes.length ? this.findSelectedNode() : null;
+        const parent = this.selectedNodes.length ? this.getSelectedNode() : null;
 
         const newNode = {
             id: this.idGenerator(),
@@ -46,7 +46,7 @@ export class NodeList {
         }
 
         let nodes = this.nodes.filter(node => node.id !== this.lastAddedNode);
-        let selectedNode = this.findSelectedNode()
+        let selectedNode = this.getSelectedNode()
         let selectedNodes = this.selectedNodes.filter(node => node !== this.lastAddedNode);
 
         if (selectedNode === this.lastAddedNode) {
@@ -80,7 +80,7 @@ export class NodeList {
 
     removeNode(id) {
         let nodes = this.nodes.filter(node => node.id !== id);
-        let selectedNode = this.findSelectedNode();
+        let selectedNode = this.getSelectedNode();
         let selectedNodes = this.selectedNodes.filter(node => node !== id);
 
         if (selectedNode === id) {
@@ -168,16 +168,16 @@ export class NodeList {
             }
         });
 
-        const selectedNodes = this.findSelectedNode() !== id ? [...this.selectedNodes, id] : this.selectedNodes;
+        const selectedNodes = this.getSelectedNode() !== id ? [...this.selectedNodes, id] : this.selectedNodes;
 
         return new NodeList(this.idGenerator, nodes, selectedNodes, this.lastAddedNode);
     }
 
-    findById(id) {
+    getNode(id) {
         return this.nodes.find(node => node.id === id);
     }
 
-    findSelectedNode() {
+    getSelectedNode() {
         return this.selectedNodes[this.selectedNodes.length - 1];
     }
 
