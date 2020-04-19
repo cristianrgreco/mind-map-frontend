@@ -7,28 +7,12 @@
 
 /* todo always center of viewport, like the Legend */
 .Map .Start {
-    font: 28px sans-serif;
+    font: 32px sans-serif;
     color: #ccc;
     opacity: .5;
-    text-transform: capitalize;
+    font-variant: all-small-caps;
     position: fixed;
     left: calc(50% + 50vw);
     top: calc(50% + 50vh);
     transform: translate(-50%, -50%);
-}
-
-.Legend {
-    width: 100%;
-    text-align: right;
-    font: 14px sans-serif;
-    color: #ccc;
-    opacity: .5;
-    position: fixed;
-    left: calc(100% - 15px);
-    top: calc(100% - 15px);
-    transform: translate(-100%, -100%);
-}
-
-.Legend .LegendItem {
-    line-height: 20px;
 }

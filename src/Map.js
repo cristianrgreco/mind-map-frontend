@@ -4,8 +4,7 @@ import {Node} from "./Node";
 import {Line} from "./Line";
 import {NodeList} from "./NodeList";
 import dragImage from "./dragImage";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faHandPointer, faBackspace, faArrowsAlt} from '@fortawesome/free-solid-svg-icons'
+import {Legend} from "./Legend";
 
 /* todo
  *  - hotkeys and instructions (map in bottom right?)
@@ -95,13 +94,7 @@ export function Map() {
                     })
                 }
             </div>
-            <div className={styles.Legend}>
-                <div className={styles.LegendItem}>Pan with <FontAwesomeIcon icon={faArrowsAlt}/></div>
-                <div className={styles.LegendItem}>Select node with <FontAwesomeIcon icon={faHandPointer}/></div>
-                <div className={styles.LegendItem}>Move node by <FontAwesomeIcon icon={faArrowsAlt}/> on a node</div>
-                <div className={styles.LegendItem}>Delete node with <FontAwesomeIcon icon={faBackspace}/> on a selected node</div>
-                <div className={styles.LegendItem}>Cancel add node with ESC</div>
-            </div>
+            <Legend/>
         </div>
     );
 }
