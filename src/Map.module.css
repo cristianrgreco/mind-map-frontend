@@ -15,7 +15,7 @@
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    font-variant: all-small-caps;
+    font-variant: small-caps;
     cursor: grab;
     user-select: none;
 }
@@ -53,13 +53,13 @@
 }
 
 .Button:hover {
-    color: #eee;
-    border-color: #eee;
-    background-color: #555;
+    color: #ddd;
+    border-color: #ddd;
+    background-color: #444;
 }
 
 .Button:active {
-    background-color: #111;
+    background-color: #222;
 }
 
 .ItemIcon {
