@@ -86,8 +86,7 @@ export function Map() {
                             )}
                         </Fragment>
                     );
-                })
-                }
+                })}
             </div>
             {nodeList.nodes.length === 0 && (
                 <div className={styles.Start}>Click anywhere to start</div>
