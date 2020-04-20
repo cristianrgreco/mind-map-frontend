@@ -143,7 +143,7 @@ export function Map() {
             )}
             <div className={styles.Controls}>
                 <div className={styles.ControlItem}>
-                    <Link to="/">
+                    <Link className={styles.Link} to="/">
                         <div className={styles.Button} onClick={e => e.stopPropagation()}>
                             <span>New</span>
                         </div>

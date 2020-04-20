@@ -37,6 +37,10 @@
     font-variant: small-caps;
 }
 
+.Link {
+    text-decoration: none;
+}
+
 .Button {
     cursor: pointer;
     padding: 4px 8px;
@@ -44,10 +48,14 @@
     user-select: none;
     background-color: #333;
     color: #ccc;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }
 
 .Button:hover {
-    outline: 1px solid #ccc;
+    color: #eee;
+    border-color: #eee;
+    background-color: #555;
 }
 
 .Button:active {
