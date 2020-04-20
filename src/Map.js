@@ -1,4 +1,5 @@
-import React, {Fragment, useState} from "react";
+import React, {Fragment, useEffect, useState} from "react";
+import {useParams} from 'react-router-dom';
 import styles from './Map.module.css';
 import {Node} from "./Node";
 import {Line} from "./Line";
@@ -12,9 +13,14 @@ import {Legend} from "./Legend";
  *  - double clicking node doesn't select it
  */
 export function Map() {
+    const {id} = useParams();
     const [nodeList, setNodeList] = useState(new NodeList());
     const [startPan, setStartPan] = useState({x: 0, y: 0});
     const [pan, setPan] = useState({x: -5000, y: -5000});
+
+    useEffect(() => {
+        console.log(id);
+    }, [id]);
 
     const addNode = e =>
         setNodeList(nodeList.addNode(e.pageX - pan.x, e.pageY - pan.y));
