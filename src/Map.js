@@ -1,14 +1,16 @@
 import React, {Fragment, useEffect, useState} from "react";
-import {useParams} from 'react-router-dom';
+import {Link, useParams} from 'react-router-dom';
+import {faPlus, faSync} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import styles from './Map.module.css';
 import {Node} from "./Node";
 import {Line} from "./Line";
 import {NodeList} from "./NodeList";
 import dragImage from "./dragImage";
 import {Legend} from "./Legend";
+import {fetchMindMap, saveMindMap} from "./api";
 
 /* todo
- *  - when you load, we create a UUID, and changes are insta-saved
  *  - cancel node edit when click away if there's text, cancel node otherwise
  *  - double clicking node doesn't select it
  */
@@ -17,10 +19,50 @@ export function Map() {
     const [nodeList, setNodeList] = useState(new NodeList());
     const [startPan, setStartPan] = useState({x: 0, y: 0});
     const [pan, setPan] = useState({x: -5000, y: -5000});
+    const [initialised, setIsInitialised] = useState(false);
+    const [isSaving, setIsSaving] = useState(false);
 
     useEffect(() => {
-        console.log(id);
-    }, [id]);
+        fetchData();
+    }, []);
+
+    useEffect(() => {
+        if (initialised) {
+            const handler = setTimeout(() => saveData(), 500);
+            return () => clearTimeout(handler);
+        }
+    }, [nodeList, pan]);
+
+    const fetchData = async () => {
+        const result = await fetchMindMap(id);
+
+        if (result.status === 200) {
+            const {nodeList, pan} = result.data;
+            setNodeList(new NodeList(undefined, nodeList.nodes, nodeList.selectedNodes, nodeList.lastAddedNode));
+            setPan({x: pan.x, y: pan.y}); // todo pan seems to be off a little sometimes
+        }
+
+        setIsInitialised(true);
+    };
+
+    const saveData = async () => {
+        setIsSaving(true);
+
+        const data = {
+            nodeList: {
+                nodes: nodeList.nodes,
+                selectedNodes: nodeList.selectedNodes,
+                lastAddedNode: nodeList.lastAddedNode
+            },
+            pan: {
+                x: pan.x,
+                y: pan.y
+            }
+        };
+
+        await saveMindMap(id, data);
+        setIsSaving(false);
+    };
 
     const addNode = e =>
         setNodeList(nodeList.addNode(e.pageX - pan.x, e.pageY - pan.y));
@@ -94,9 +136,26 @@ export function Map() {
                     );
                 })}
             </div>
-            {nodeList.nodes.length === 0 && (
+            {initialised && nodeList.nodes.length === 0 && (
                 <div className={styles.Start}>Click anywhere to start</div>
             )}
+            <div className={styles.Controls}>
+                <div className={styles.ControlItem}>
+                    <Link to="/">
+                        <div className={styles.Button} onClick={e => e.stopPropagation()}>
+                            <span>New</span>
+                        </div>
+                    </Link>
+                </div>
+            </div>
+            <div className={styles.Info}>
+                {isSaving && (
+                    <div>
+                        <span className={styles.InfoItem}>Saving</span>
+                        <span className={styles.ItemIcon}><FontAwesomeIcon icon={faSync} spin={true}/></span>
+                    </div>
+                )}
+            </div>
             <Legend/>
         </div>
     );

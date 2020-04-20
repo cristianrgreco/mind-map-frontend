@@ -19,3 +19,61 @@
     cursor: grab;
     user-select: none;
 }
+
+.Controls {
+    z-index: 5;
+    width: 100%;
+    text-align: left;
+    font: 14px sans-serif;
+    color: #ccc;
+    opacity: .5;
+    position: fixed;
+    left: calc(100% + 15px);
+    top: calc(40px);
+    transform: translate(-100%, -100%);
+}
+
+.Controls .ControlItem {
+    font-variant: small-caps;
+}
+
+.Button {
+    cursor: pointer;
+    padding: 4px 8px;
+    display: inline-flex;
+    user-select: none;
+    background-color: #333;
+    color: #ccc;
+}
+
+.Button:hover {
+    outline: 1px solid #ccc;
+}
+
+.Button:active {
+    background-color: #111;
+}
+
+.ItemIcon {
+    margin-left: 8px;
+}
+
+.Info {
+    width: 100%;
+    text-align: right;
+    font: 14px sans-serif;
+    color: #ccc;
+    opacity: .5;
+    position: fixed;
+    left: calc(100% - 23px);
+    top: calc(37px);
+    transform: translate(-100%, -100%);
+}
+
+.Info .InfoItem {
+    line-height: 20px;
+    font-variant: small-caps;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
