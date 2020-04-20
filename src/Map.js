@@ -103,7 +103,7 @@ export function Map() {
     };
 
     return (
-        <div id="hello" onClick={addNode} onKeyDown={onKeyDown} onDragOver={e => e.preventDefault()}>
+        <div onClick={addNode} onKeyDown={onKeyDown} onDragOver={e => e.preventDefault()}>
             <div
                 style={{transform: `translateX(${pan.x}px) translateY(${pan.y}px)`}}
                 tabIndex={0}
