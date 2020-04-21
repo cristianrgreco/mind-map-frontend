@@ -111,7 +111,7 @@ export function Map() {
     return (
         <div onClick={addNode} onKeyDown={onKeyDown} onDragOver={e => e.preventDefault()}>
             <div
-                style={{transform: `translateX(${pan.x}px) translateY(${pan.y}px)`}}
+                style={{transform: `translate3d(${pan.x}px, ${pan.y}px, 0)`}}
                 tabIndex={0}
                 className={`${styles.Map} ${isEmpty && styles.Empty}`}
                 draggable={true}

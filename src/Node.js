@@ -55,7 +55,7 @@ export function Node({value, setValue, x, y, setPosition, isNew, setIsNew, isSel
         <div
             ref={ref}
             className={`${styles.Node} ${isSelected && styles.Selected} ${isNew && styles.New} ${isRoot && styles.Root}`}
-            style={{left: `${x}px`, top: `${y}px`}}
+            style={{transform: `translate3d(${x}px, ${y}px, 0)`}}
             onClick={onClick}
             onDoubleClick={onDoubleClick}
             draggable={true} onDragStart={onDragStart} onDrag={onDrag}>
