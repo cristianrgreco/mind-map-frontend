@@ -1,6 +1,6 @@
 import React, {Fragment, useEffect, useState} from "react";
 import {Link, useParams} from 'react-router-dom';
-import {faPlus, faSync} from "@fortawesome/free-solid-svg-icons";
+import {faSync} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import styles from './Map.module.css';
 import {Node} from "./Node";
@@ -12,6 +12,7 @@ import {fetchMindMap, saveMindMap} from "./api";
 
 /* todo
  *  - mindmapper.io ?
+ *  - the legend is on top of the map
  *  - redo how pan works. Can just store pan.x and pan.y, and set positions of nodes and lines + that offset, no need for a large canvas with translations
  *  - create and move to real backend with serverless
  *  - host the frontend with S3
