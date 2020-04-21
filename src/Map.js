@@ -38,6 +38,8 @@ export function Map() {
         }
     }, [nodeList, pan]);
 
+    const isEmpty = initialised && nodeList.nodes.length === 0;
+
     const fetchData = async () => {
         const result = await fetchMindMap(id);
 
@@ -110,7 +112,7 @@ export function Map() {
             <div
                 style={{transform: `translateX(${pan.x}px) translateY(${pan.y}px)`}}
                 tabIndex={0}
-                className={`${styles.Map} ${initialised && nodeList.nodes.length === 0 && styles.Empty}`}
+                className={`${styles.Map} ${isEmpty && styles.Empty}`}
                 draggable={true}
                 onDragStart={onDragStart}
                 onDrag={onDrag}>
@@ -141,7 +143,7 @@ export function Map() {
                     );
                 })}
             </div>
-            {initialised && nodeList.nodes.length === 0 && (
+            {isEmpty && (
                 <div className={styles.Start}>Click anywhere to start</div>
             )}
             <div className={styles.Controls}>
