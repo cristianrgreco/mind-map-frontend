@@ -29,7 +29,7 @@ export function Map() {
 
     useEffect(() => {
         if (initialised) {
-            const handler = setTimeout(() => saveData(), 500);
+            const handler = setTimeout(() => saveData(), 1000);
             return () => clearTimeout(handler);
         }
     }, [nodeList, pan]);
