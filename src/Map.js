@@ -13,6 +13,7 @@ import {fetchMindMap, saveMindMap} from "./api";
 /* todo
  *  - mindmapper.io ?
  *  - the legend is on top of the map
+ *  - replace CSS modules with inline, and possibly SASS
  *  - redo how pan works. Can just store pan.x and pan.y, and set positions of nodes and lines + that offset, no need for a large canvas with translations
  *  - create and move to real backend with serverless
  *  - host the frontend with S3
