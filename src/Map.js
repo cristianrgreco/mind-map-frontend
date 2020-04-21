@@ -109,7 +109,7 @@ export function Map() {
             <div
                 style={{transform: `translateX(${pan.x}px) translateY(${pan.y}px)`}}
                 tabIndex={0}
-                className={styles.Map}
+                className={`${styles.Map} ${initialised && nodeList.nodes.length === 0 && styles.Empty}`}
                 draggable={true}
                 onDragStart={onDragStart}
                 onDrag={onDrag}>
@@ -144,13 +144,15 @@ export function Map() {
                 <div className={styles.Start}>Click anywhere to start</div>
             )}
             <div className={styles.Controls}>
-                <div className={styles.ControlItem}>
-                    <Link className={styles.Link} to="/">
-                        <div className={styles.Button} onClick={e => e.stopPropagation()}>
-                            <span>New</span>
-                        </div>
-                    </Link>
-                </div>
+                {initialised && nodeList.nodes.length > 0 && (
+                    <div className={styles.ControlItem}>
+                        <Link className={styles.Link} to="/">
+                            <div className={styles.Button} onClick={e => e.stopPropagation()}>
+                                <span>New</span>
+                            </div>
+                        </Link>
+                    </div>
+                )}
             </div>
             <div className={styles.Info}>
                 {isSaving && (
