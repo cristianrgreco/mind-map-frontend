@@ -11,8 +11,6 @@ import {Legend} from "./Legend";
 import {fetchMindMap, saveMindMap} from "./api";
 
 /* todo
- *  - mindmapper.io ?
- *  - icons
  *  - replace CSS modules with inline, and possibly SASS
  *  - cancel node edit when click away if there's text, cancel node otherwise
  *  - double clicking node doesn't select it
