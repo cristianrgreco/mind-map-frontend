@@ -31,16 +31,6 @@ describe('NodeList', () => {
             expect(result.nodes).toEqual([expectedNode1, expectedNode2]);
             expect(result.selectedNodes).toEqual([expectedNode1.id]);
         });
-
-        it('should not add a new node if one is already in progress', () => {
-            const setup = nodeList.addNode(100, 100);
-
-            const result = setup.addNode(100, 100);
-
-            const expectedNode = aNode();
-            expect(result.nodes).toEqual([expectedNode]);
-            expect(result.selectedNodes).toEqual([expectedNode.id]);
-        });
     });
 
     describe('#cancelAddNode', () => {

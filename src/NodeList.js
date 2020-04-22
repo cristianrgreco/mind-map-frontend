@@ -12,11 +12,11 @@ export class NodeList {
         this.lastAddedNode = lastAddedNode;
     }
 
-    addNode(x, y) {
-        if (this.nodes.some(node => node.isNew)) {
-            return this;
-        }
+    isNodeNew() {
+        return this.nodes.some(node => node.isNew);
+    }
 
+    addNode(x, y) {
         const isOnlyNode = this._isOnlyNode();
         const parent = this.selectedNodes.length ? this.getSelectedNode() : null;
 

@@ -66,8 +66,13 @@ export function Map() {
         setIsSaving(false);
     };
 
-    const addNode = e =>
-        setNodeList(nodeList.addNode(e.pageX - pan.x, e.pageY - pan.y));
+    const addNode = e => {
+        if (nodeList.isNodeNew()) {
+            setNodeList(nodeList.cancelAddNode());
+        } else {
+            setNodeList(nodeList.addNode(e.pageX - pan.x, e.pageY - pan.y));
+        }
+    };
 
     const setValue = node => (value, width, height) =>
         setNodeList(nodeList.setValue(node.id, value, width, height));
