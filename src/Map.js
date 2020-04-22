@@ -11,7 +11,6 @@ import {Legend} from "./Legend";
 import {fetchMindMap, saveMindMap} from "./api";
 
 /* todo
- *  - cancel node edit when click away if there's text, cancel node otherwise
  *  - double clicking node doesn't select it
  */
 export function Map() {
