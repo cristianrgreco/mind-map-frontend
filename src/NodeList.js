@@ -43,7 +43,7 @@ export class NodeList {
     cancelAddNode() {
         const lastAdded = this.nodes.find(aNode => aNode.id === this.lastAddedNode);
 
-        if (!this.lastAddedNode || !lastAdded.isNew) {
+        if (!this.lastAddedNode || !lastAdded.isNew || lastAdded.value.length > 0) {
             return this;
         }
 

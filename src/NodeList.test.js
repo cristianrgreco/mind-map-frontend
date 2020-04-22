@@ -55,6 +55,18 @@ describe('NodeList', () => {
             expect(result.selectedNodes).toEqual([expectedNode.id]);
         });
 
+        it('should not cancel adding a node if the node is new and has value', () => {
+            const setup = nodeList
+                .addNode(100, 100)
+                .setValue('id-1', 'value', 0, 0);
+
+            const result = setup.cancelAddNode();
+
+            const expectedNode = aNode({value: 'value'});
+            expect(result.nodes).toEqual([expectedNode]);
+            expect(result.selectedNodes).toEqual([expectedNode.id]);
+        });
+
         it('should set the selected node to the previously selected node', () => {
             const setup = nodeList
                 .addNode(100, 100)
