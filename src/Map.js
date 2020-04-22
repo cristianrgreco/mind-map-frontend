@@ -70,7 +70,7 @@ export function Map() {
 
         if (newNode) {
             if (newNode && newNode.value.length > 0) {
-                setNodeList(nodeList.setIsNew(newNode.id, false));
+                setNodeList(nodeList.setIsNew(newNode.id, false).setIsSelected(newNode.id));
             } else {
                 setNodeList(nodeList.cancelAddNode());
             }
