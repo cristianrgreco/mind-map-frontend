@@ -11,15 +11,13 @@ import {Legend} from "./Legend";
 import {fetchMindMap, saveMindMap} from "./api";
 
 /* todo
- *  - dragging does not work in firefox (try react-draggable again?)
- *  - replace CSS modules with inline, and possibly SASS
  *  - cancel node edit when click away if there's text, cancel node otherwise
  *  - double clicking node doesn't select it
  */
 export function Map() {
     const {id} = useParams();
     const [nodeList, setNodeList] = useState(new NodeList());
-    const [startPan, setStartPan] = useState({x: 0, y: 0});
+    const [startDrag, setStartDrag] = useState({type: null, id: null, x: 0, y: 0});
     const [pan, setPan] = useState({x: -5000, y: -5000});
     const [initialised, setIsInitialised] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
@@ -74,14 +72,20 @@ export function Map() {
     const setValue = node => (value, width, height) =>
         setNodeList(nodeList.setValue(node.id, value, width, height));
 
-    const setPosition = node => (x, y) =>
-        setNodeList(nodeList.setPosition(node.id, x, y));
+    const setPosition = (nodeId, x, y) =>
+        setNodeList(nodeList.setPosition(nodeId, x, y));
 
     const setIsNew = node => isNew =>
         setNodeList(nodeList.setIsNew(node.id, isNew).setIsSelected(node.id));
 
     const setIsSelected = node => () =>
         setNodeList(nodeList.setIsSelected(node.id));
+
+    const setMapDragStart = (x, y) =>
+        setStartDrag({type: 'map', x, y});
+
+    const setNodeDragStart = node => (x, y) =>
+        setStartDrag({type: 'node', id: node.id, x, y})
 
     const onKeyDown = e => {
         if (e.key === 'Backspace' || e.key === 'Delete') {
@@ -93,27 +97,28 @@ export function Map() {
 
     const onDragStart = e => {
         e.dataTransfer.setDragImage(dragImage, 0, 0);
-        setStartPan({x: pan.x - e.pageX, y: pan.y - e.pageY});
+        setMapDragStart(pan.x - e.pageX, pan.y - e.pageY);
     };
 
-    const onDrag = e => {
+    const onDragOver = e => {
         e.preventDefault();
 
-        if (e.pageX && e.pageY) {
-            setPan({x: e.pageX + startPan.x, y: e.pageY + startPan.y});
+        if (startDrag.type === 'node') {
+            setPosition(startDrag.id, e.pageX + startDrag.x, e.pageY + startDrag.y);
+        } else if (startDrag.type === 'map') {
+            setPan({x: e.pageX + startDrag.x, y: e.pageY + startDrag.y});
         }
     };
 
     return (
-        <div onClick={addNode} onKeyDown={onKeyDown} onDragOver={e => e.preventDefault()}>
+        <div onClick={addNode} onKeyDown={onKeyDown} onDragOver={onDragOver}>
             <div
                 style={{transform: `translate3d(${pan.x}px, ${pan.y}px, 0)`}}
                 tabIndex={0}
                 className={`${styles.Map} ${isEmpty && styles.Empty}`}
                 draggable={true}
                 onDragStart={onDragStart}
-                onDrag={onDrag}>
-
+            >
                 {nodeList.nodes.map(node => {
                     const parent = nodeList.getNode(node.parent);
                     return (
@@ -123,7 +128,7 @@ export function Map() {
                                 setValue={setValue(node)}
                                 x={node.x}
                                 y={node.y}
-                                setPosition={setPosition(node)}
+                                setStartDrag={setNodeDragStart(node)}
                                 isNew={node.isNew}
                                 setIsNew={setIsNew(node)}
                                 isSelected={node.isSelected}

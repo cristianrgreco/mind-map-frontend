@@ -1,16 +1,14 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef} from 'react';
 import AutosizeInput from 'react-input-autosize';
 import styles from './Node.module.css';
 import dragImage from "./dragImage";
 
-export function Node({value, setValue, x, y, setPosition, isNew, setIsNew, isSelected, setIsSelected, isRoot}) {
+export function Node({value, setValue, x, y, setStartDrag, isNew, setIsNew, isSelected, setIsSelected, isRoot}) {
     const ref = useRef(null);
 
     useEffect(() => {
         setValue(value, ref.current.offsetWidth, ref.current.offsetHeight);
     }, []);
-
-    const [dragOffset, setDragOffset] = useState({x: 0, y: 0});
 
     const onKeyDown = e => {
         if (e.key !== 'Escape') {
@@ -39,16 +37,10 @@ export function Node({value, setValue, x, y, setPosition, isNew, setIsNew, isSel
     };
 
     const onDragStart = e => {
-        e.dataTransfer.setDragImage(dragImage, 0, 0);
-        setDragOffset({x: x - e.pageX, y: y - e.pageY});
-    };
-
-    const onDrag = e => {
         e.stopPropagation();
 
-        if (e.pageX && e.pageY) {
-            setPosition(e.pageX + dragOffset.x, e.pageY + dragOffset.y);
-        }
+        e.dataTransfer.setDragImage(dragImage, 0, 0);
+        setStartDrag(x - e.pageX, y - e.pageY);
     };
 
     return (
@@ -58,8 +50,9 @@ export function Node({value, setValue, x, y, setPosition, isNew, setIsNew, isSel
             style={{transform: `translate3d(${x}px, ${y}px, 0)`}}
             onClick={onClick}
             onDoubleClick={onDoubleClick}
-            draggable={true} onDragStart={onDragStart} onDrag={onDrag}>
-
+            draggable={true}
+            onDragStart={onDragStart}
+        >
             {!isNew
                 ? <span>{value}</span>
                 : <AutosizeInput
