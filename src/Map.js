@@ -43,7 +43,7 @@ export function Map() {
         if (result.status === 200) {
             const {nodeList, pan} = result.data;
             setNodeList(new NodeList(undefined, nodeList.nodes, nodeList.selectedNodes, nodeList.lastAddedNode));
-            setPan({x: pan.x, y: pan.y}); // todo pan seems to be off a little sometimes
+            setPan({x: pan.x, y: pan.y});
         }
 
         setIsInitialised(true);
