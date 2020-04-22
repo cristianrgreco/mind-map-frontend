@@ -162,7 +162,7 @@ export class NodeList {
             if (node.id === id) {
                 return {...node, isSelected: true};
             } else {
-                return {...node, isSelected: false};
+                return {...node, isSelected: false, isNew: false};
             }
         });
 

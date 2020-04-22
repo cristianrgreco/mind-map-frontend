@@ -156,10 +156,10 @@ describe('NodeList', () => {
     });
 
     describe('#setIsSelected', () => {
-        it('should set the isSelected of the node', () => {
+        it('should set the isSelected of the node and set isNew of other nodes to false', () => {
             const setup = nodeList
                 .addNode(100, 100)
-                .setIsNew('id-1', false)
+                .setIsNew('id-1', true)
                 .addNode(100, 100)
 
             const result = setup.setIsSelected('id-2');
