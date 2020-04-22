@@ -65,9 +65,15 @@ export function Map() {
         setIsSaving(false);
     };
 
-    const addNode = e => {
-        if (nodeList.isNodeNew()) {
-            setNodeList(nodeList.cancelAddNode());
+    const onClick = e => {
+        const newNode = nodeList.getNewNode();
+
+        if (newNode) {
+            if (newNode && newNode.value.length > 0) {
+                setNodeList(nodeList.setIsNew(newNode.id, false));
+            } else {
+                setNodeList(nodeList.cancelAddNode());
+            }
         } else {
             setNodeList(nodeList.addNode(e.pageX - pan.x, e.pageY - pan.y));
         }
@@ -115,7 +121,7 @@ export function Map() {
     };
 
     return (
-        <div onClick={addNode} onKeyDown={onKeyDown} onDragOver={onDragOver}>
+        <div onClick={onClick} onKeyDown={onKeyDown} onDragOver={onDragOver}>
             <div
                 style={{transform: `translate3d(${pan.x}px, ${pan.y}px, 0)`}}
                 tabIndex={0}

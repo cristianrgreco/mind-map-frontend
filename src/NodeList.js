@@ -12,10 +12,6 @@ export class NodeList {
         this.lastAddedNode = lastAddedNode;
     }
 
-    isNodeNew() {
-        return this.nodes.some(node => node.isNew);
-    }
-
     addNode(x, y) {
         const isOnlyNode = this._isOnlyNode();
         const parent = this.selectedNodes.length ? this.getSelectedNode() : null;
@@ -181,6 +177,10 @@ export class NodeList {
 
     getSelectedNode() {
         return this.selectedNodes[this.selectedNodes.length - 1];
+    }
+
+    getNewNode() {
+        return this.nodes.find(node => node.isNew);
     }
 
     _isOnlyNode() {
