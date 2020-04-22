@@ -10,7 +10,7 @@ export function Legend() {
                 Pan with <FontAwesomeIcon icon={faArrowsAlt}/>
             </div>
             <div className={styles.LegendItem}>
-                Create node with <FontAwesomeIcon icon={faHandPointer}/> and <div className={styles.Key}>ENTER</div>
+                Create node by <FontAwesomeIcon icon={faHandPointer}/> and <div className={styles.Key}>ENTER</div>
             </div>
             <div className={styles.LegendItem}>
                 Select node by <FontAwesomeIcon icon={faHandPointer}/> on a node
