@@ -155,6 +155,12 @@ export function Map() {
                 )}
             </div>
             <div className={styles.Info}>
+                {!initialised && (
+                    <div>
+                        <span className={styles.InfoItem}>Loading</span>
+                        <span className={styles.ItemIcon}><FontAwesomeIcon icon={faSync} spin={true}/></span>
+                    </div>
+                )}
                 {isSaving && (
                     <div>
                         <span className={styles.InfoItem}>Saving</span>
