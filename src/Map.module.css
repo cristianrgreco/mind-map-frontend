@@ -1,8 +1,25 @@
+.Map, .MapPreview, .Viewport {
+    width: 3000px;
+    height: 3000px;
+}
+
 .Map {
-    width: 10000px;
-    height: 10000px;
     background-color: #333333;
     cursor: grab;
+}
+
+.MapPreview {
+    border-radius: 200px;
+    background-color: #333333;
+    position: fixed;
+    transform: scale(0.075);
+    top: -1370px;
+    right: -1370px;
+    border: 5px solid #ccc;
+}
+
+.Viewport {
+    border-radius: 200px;
 }
 
 .Map.Empty {

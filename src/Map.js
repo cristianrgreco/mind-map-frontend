@@ -11,13 +11,21 @@ import {Legend} from "./Legend";
 import {fetchMindMap, saveMindMap} from "./api";
 
 /* todo
+ *  - preview should respond to window resize event
+ *  - do not allow moving map or nodes outside of boundary
  *  - double clicking node doesn't select it
  */
+
+const size = 3000;
+
 export function Map() {
     const {id} = useParams();
     const [nodeList, setNodeList] = useState(new NodeList());
     const [startDrag, setStartDrag] = useState({type: null, id: null, x: 0, y: 0});
-    const [pan, setPan] = useState({x: -5000, y: -5000});
+    const [pan, setPan] = useState({
+        x: -(size / 2) + (window.innerWidth / 2),
+        y: -(size / 2) + (window.innerHeight / 2)
+    });
     const [initialised, setIsInitialised] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
 
@@ -120,6 +128,13 @@ export function Map() {
         }
     };
 
+    const viewport = {
+        x: Math.abs(pan.x),
+        y: Math.abs(pan.y),
+        w: window.innerWidth,
+        h: window.innerHeight
+    };
+
     return (
         <div onClick={onClick} onKeyDown={onKeyDown} onDragOver={onDragOver}>
             <div
@@ -154,6 +169,49 @@ export function Map() {
                         </Fragment>
                     );
                 })}
+            </div>
+            <div className={styles.MapPreview}>
+                {nodeList.nodes.map(node => {
+                    const parent = nodeList.getNode(node.parent);
+                    return (
+                        <Fragment key={node.id}>
+                            <Node
+                                value={node.value}
+                                setValue={() => {
+                                }}
+                                x={node.x}
+                                y={node.y}
+                                setStartDrag={() => {
+                                }}
+                                isNew={node.isNew}
+                                setIsNew={() => {
+                                }}
+                                isSelected={node.isSelected}
+                                setIsSelected={() => {
+                                }}
+                                isPreview={true}
+                                isRoot={node.isRoot}
+                            />
+                            {!node.isRoot && (
+                                <Line
+                                    from={{x: node.x, y: node.y, w: node.width, h: node.height}}
+                                    to={{x: parent.x, y: parent.y, w: parent.width, h: parent.height}}
+                                />
+                            )}
+                        </Fragment>
+                    );
+                })}
+                {
+                    <svg className={styles.Viewport}>
+                        <polyline
+                            // points="100,100 100,1000 1000,1000 1000,100 100,100"
+                            // points={`0,0 0,${window.innerHeight} ${window.innerWidth},${window.innerHeight} ${window.innerWidth},0   0,0`}
+                            points={`${viewport.x},${viewport.y} ${viewport.x},${viewport.y + viewport.h} ${viewport.x + viewport.w},${viewport.y + viewport.h} ${viewport.x + viewport.w},${viewport.y} ${viewport.x},${viewport.y}`}
+                            // points={`${pan.x},${pan.y} ${pan.x},${pan.y + window.innerHeight} ${pan.x + window.innerWidth},${pan.y + window.innerHeight} ${pan.x + window.innerWidth},${pan.y} ${pan.x},${pan.y}`}
+                            style={{fill: 'none', stroke: '#ccc', strokeWidth: '5'}}
+                        />
+                    </svg>
+                }
             </div>
             {isEmpty && (
                 <div className={styles.Start}>Click anywhere to start</div>
