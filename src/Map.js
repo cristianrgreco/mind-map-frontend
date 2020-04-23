@@ -32,7 +32,7 @@ export function Map() {
 
     useLayoutEffect(() => {
         function updatePan() {
-            setPan({
+            setPanBounded({
                 x: -(size / 2) + (window.innerWidth / 2),
                 y: -(size / 2) + (window.innerHeight / 2)
             });
@@ -42,6 +42,13 @@ export function Map() {
         updatePan();
         return () => window.removeEventListener('resize', updatePan);
     }, []);
+
+    const setPanBounded = newPan => {
+        setPan({
+            x: Math.max(-size + window.innerWidth, Math.min(0, newPan.x)),
+            y: Math.max(-size + window.innerHeight, Math.min(0, newPan.y))
+        });
+    };
 
     useEffect(() => {
         fetchData();
@@ -62,7 +69,7 @@ export function Map() {
         if (result.status === 200) {
             const {nodeList, pan} = result.data;
             setNodeList(new NodeList(undefined, nodeList.nodes, nodeList.selectedNodes, nodeList.lastAddedNode));
-            setPan({x: pan.x, y: pan.y});
+            setPanBounded({x: pan.x, y: pan.y});
         }
 
         setIsInitialised(true);
@@ -138,7 +145,7 @@ export function Map() {
         if (startDrag.type === 'node') {
             setPosition(startDrag.id, e.pageX + startDrag.x, e.pageY + startDrag.y);
         } else if (startDrag.type === 'map') {
-            setPan({x: e.pageX + startDrag.x, y: e.pageY + startDrag.y});
+            setPanBounded({x: e.pageX + startDrag.x, y: e.pageY + startDrag.y});
         }
     };
 
