@@ -1,4 +1,4 @@
-import React, {Fragment, useEffect, useState} from "react";
+import React, {Fragment, useEffect, useLayoutEffect, useState} from "react";
 import {Link, useParams} from 'react-router-dom';
 import {faSync} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -11,9 +11,10 @@ import {Legend} from "./Legend";
 import {fetchMindMap, saveMindMap} from "./api";
 
 /* todo
- *  - preview should respond to window resize event
  *  - do not allow moving map or nodes outside of boundary
+ *  - move status (saving/loading) to bottom left
  *  - double clicking node doesn't select it
+ *  - improve positioning/layering of elements on the canvas
  */
 
 const size = 3000;
@@ -28,6 +29,19 @@ export function Map() {
     });
     const [initialised, setIsInitialised] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
+
+    useLayoutEffect(() => {
+        function updatePan() {
+            setPan({
+                x: -(size / 2) + (window.innerWidth / 2),
+                y: -(size / 2) + (window.innerHeight / 2)
+            });
+        }
+
+        window.addEventListener('resize', updatePan);
+        updatePan();
+        return () => window.removeEventListener('resize', updatePan);
+    }, []);
 
     useEffect(() => {
         fetchData();
@@ -204,10 +218,7 @@ export function Map() {
                 {
                     <svg className={styles.Viewport}>
                         <polyline
-                            // points="100,100 100,1000 1000,1000 1000,100 100,100"
-                            // points={`0,0 0,${window.innerHeight} ${window.innerWidth},${window.innerHeight} ${window.innerWidth},0   0,0`}
                             points={`${viewport.x},${viewport.y} ${viewport.x},${viewport.y + viewport.h} ${viewport.x + viewport.w},${viewport.y + viewport.h} ${viewport.x + viewport.w},${viewport.y} ${viewport.x},${viewport.y}`}
-                            // points={`${pan.x},${pan.y} ${pan.x},${pan.y + window.innerHeight} ${pan.x + window.innerWidth},${pan.y + window.innerHeight} ${pan.x + window.innerWidth},${pan.y} ${pan.x},${pan.y}`}
                             style={{fill: 'none', stroke: '#ccc', strokeWidth: '5'}}
                         />
                     </svg>

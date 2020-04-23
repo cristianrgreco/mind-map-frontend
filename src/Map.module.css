@@ -94,9 +94,8 @@
     color: #ccc;
     opacity: .5;
     position: fixed;
-    left: calc(100% - 23px);
-    top: calc(37px);
-    transform: translate(-100%, -100%);
+    left: calc(-100% + 90px);
+    top: calc(100% - 40px);
 }
 
 .Info .InfoItem {
