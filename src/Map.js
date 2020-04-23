@@ -11,8 +11,8 @@ import {Legend} from "./Legend";
 import {fetchMindMap, saveMindMap} from "./api";
 
 /* todo
- *  - do not allow moving map or nodes outside of boundary
- *  - move status (saving/loading) to bottom left
+ *  - allow clicking on preview to go there
+ *  - put the preview in a container which we can put border/style properly
  *  - double clicking node doesn't select it
  *  - improve positioning/layering of elements on the canvas
  */
@@ -108,6 +108,11 @@ export function Map() {
         }
     };
 
+    const onClickPreview = e => {
+        // get x,y pos of the preview. get delta with e.pageX,e.pageY
+        console.log(e.pageX, e.pageY);
+    }
+
     const setValue = node => (value, width, height) =>
         setNodeList(nodeList.setValue(node.id, value, width, height));
 
@@ -191,7 +196,7 @@ export function Map() {
                     );
                 })}
             </div>
-            <div className={styles.MapPreview}>
+            <div className={styles.MapPreview} onClick={onClickPreview}>
                 {nodeList.nodes.map(node => {
                     const parent = nodeList.getNode(node.parent);
                     return (
