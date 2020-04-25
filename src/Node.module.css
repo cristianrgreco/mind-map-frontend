@@ -5,7 +5,6 @@
     border: 1px solid #ccc;
     border-radius: 8px;
     color: #ccc;
-    background-color: #333;
     font: 14px sans-serif;
     text-align: center;
     z-index: 5;
@@ -15,27 +14,26 @@
     cursor: move;
 }
 
+.Node.Root {
+    background-color: #ccc !important;
+    color: #333;
+}
+
 .Node.Preview:hover {
     cursor: inherit;
 }
 
-.Node.Root {
+.Node.Selected {
     font-weight: bold;
     border-width: 3px;
 }
 
-.Node.Root input {
+.Node.Selected input {
     font-weight: bold;
 }
 
-.Node.Selected {
-    color: #333;
-    background-color: #ccc;
-}
-
 .Node.Selected input {
-    color: #333;
-    background-color: #ccc;
+    background-color: inherit;
 }
 
 .Node.New:before {
@@ -44,24 +42,19 @@
     position: absolute;
     top: 2px;
     right: 2px;
-    color: #ccc;
     content: '*';
     width: 14px;
     height: 14px;
     font: 20px sans-serif;
 }
 
-.Node.Selected.New:before {
-    color: #333;
-}
-
 .Node input {
     margin: 0;
     padding: 0;
     border: none;
-    color: #ccc;
     font: 14px sans-serif;
-    background-color: #333;
+    background-color: inherit;
+    color: inherit;
 }
 
 .Node input:focus {

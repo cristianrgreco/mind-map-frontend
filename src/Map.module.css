@@ -1,6 +1,4 @@
 .Map {
-    width: 3000px;
-    height: 3000px;
     background-color: #333333;
     cursor: grab;
 }

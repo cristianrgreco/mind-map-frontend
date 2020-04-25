@@ -7,7 +7,7 @@ import {Square} from "./Square";
 
 const scale = 0.075;
 
-export function MapPreview({nodeList, pan, setPan}) {
+export function MapPreview({nodeList, pan, setPan, size, getNodeBackgroundColor}) {
     const ref = useRef(null);
 
     const viewport = {
@@ -37,9 +37,20 @@ export function MapPreview({nodeList, pan, setPan}) {
         e.stopPropagation();
     }
 
+    const containerStyle = {
+        width: `${size * scale}px`,
+        height: `${size * scale}px`
+    }
+
+    const mapStyle = {
+        width: `${size}px`,
+        height: `${size}px`,
+        transform: `scale(${scale})`
+    };
+
     return (
-        <div className={styles.MapPreviewContainer}>
-            <div className={styles.MapPreview} style={{transform: `scale(${scale})`}} onClick={onClick} ref={ref}>
+        <div className={styles.MapPreviewContainer} style={containerStyle}>
+            <div className={styles.MapPreview} style={mapStyle} onClick={onClick} ref={ref}>
                 {nodeList.nodes.map(node => {
                     const parent = nodeList.getNode(node.parent);
                     return (
@@ -49,6 +60,7 @@ export function MapPreview({nodeList, pan, setPan}) {
                                 setValue={noop}
                                 x={node.x}
                                 y={node.y}
+                                backgroundColor={getNodeBackgroundColor(node)}
                                 setStartDrag={noop}
                                 isNew={node.isNew}
                                 setIsNew={noop}

@@ -10,21 +10,22 @@ import {fetchMindMap, saveMindMap} from "./api";
 import {MapPreview} from "./MapPreview";
 import {MapInfo} from "./MapInfo";
 import {MapControls} from "./MapControls";
+import {convertRange} from "./range";
 
 /* todo
  *  - double clicking node doesn't select it
  *  - improve positioning/layering of elements on the canvas
  */
-
-const size = 3000;
-const serverUpdateDebounce = 1000;
-
-const centerPan = () => ({
-    x: -(size / 2) + (window.innerWidth / 2),
-    y: -(size / 2) + (window.innerHeight / 2)
-});
-
 export function Map() {
+    const size = Math.max(3000, window.innerWidth);
+    const origin = {x: size / 2, y: size / 2};
+    const convertRangeForHue = convertRange([0, size / 2], [0, 365]); // todo should it be size or window width
+
+    const centerPan = () => ({
+        x: -(size / 2) + (window.innerWidth / 2),
+        y: -(size / 2) + (window.innerHeight / 2)
+    });
+
     const {id} = useParams();
     const [nodeList, setNodeList] = useState(new NodeList());
     const [startDrag, setStartDrag] = useState({type: null, id: null, x: 0, y: 0});
@@ -45,7 +46,7 @@ export function Map() {
 
     useEffect(() => {
         if (initialised) {
-            const handler = setTimeout(() => saveData(), serverUpdateDebounce);
+            const handler = setTimeout(() => saveData(), 1000);
             return () => clearTimeout(handler);
         }
     }, [nodeList, pan]);
@@ -145,11 +146,27 @@ export function Map() {
         }
     };
 
+    const getNodeBackgroundColor = node => {
+        const distance = Math.hypot(node.x - origin.x, node.y - origin.y)
+
+        const hue = Math.floor(convertRangeForHue(distance));
+        const saturation = 100;
+        const lightness = 15;
+
+        return `hsl(${hue},${saturation}%,${lightness}%)`
+    };
+
+    const mapStyle = {
+        width: `${size}px`,
+        height: `${size}px`,
+        transform: `translate3d(${pan.x}px, ${pan.y}px, 0)`
+    };
+
     return (
         <div onClick={onClick} onKeyDown={onKeyDown} onDragOver={onDragOver}>
             <div
                 tabIndex={0}
-                style={{transform: `translate3d(${pan.x}px, ${pan.y}px, 0)`}}
+                style={mapStyle}
                 className={`${styles.Map} ${isEmpty && styles.Empty}`}
                 draggable={true}
                 onDragStart={onDragStart}
@@ -163,6 +180,7 @@ export function Map() {
                                 setValue={setValue(node)}
                                 x={node.x}
                                 y={node.y}
+                                backgroundColor={getNodeBackgroundColor(node)}
                                 setStartDrag={setNodeDragStart(node)}
                                 isNew={node.isNew}
                                 setIsNew={setIsNew(node)}
@@ -183,7 +201,8 @@ export function Map() {
             <MapControls isEmpty={isEmpty}/>
             <MapInfo initialised={initialised} isSaving={isSaving}/>
             {isEmpty && <div className={styles.Start}>Click anywhere to start</div>}
-            {!isEmpty && <MapPreview nodeList={nodeList} pan={pan} setPan={setPanBounded}/>}
+            {!isEmpty && <MapPreview nodeList={nodeList} pan={pan} setPan={setPanBounded} size={size}
+                                     getNodeBackgroundColor={getNodeBackgroundColor}/>}
             {!isEmpty && <Legend/>}
         </div>
     );
