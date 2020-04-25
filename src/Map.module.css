@@ -16,19 +16,14 @@
     top: 25px;
     right: 25px;
     background-color: #333333;
-    border: 1px solid rgba(204, 204, 204, .5);
-    border-radius: 8px;
+    filter: brightness(1.5);
 }
 
 .MapPreview {
     position: fixed;
-    top: -1360px;
-    right: -1360px;
+    top: -1388px;
+    right: -1388px;
     transform: scale(0.075);
-}
-
-.Viewport {
-    border-radius: 200px;
 }
 
 .Map.Empty {
