@@ -9,7 +9,7 @@
 }
 
 .MapPreview {
-    border-radius: 200px;
+    z-index: 20;
     background-color: #333333;
     position: fixed;
     transform: scale(0.075);
