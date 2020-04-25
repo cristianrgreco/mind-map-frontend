@@ -18,12 +18,11 @@ import {MapControls} from "./MapControls";
  *  - improve positioning/layering of elements on the canvas
  */
 export function Map() {
-    const width = window.innerWidth * 2;
-    const height = window.innerHeight * 2;
+    const size = Math.max(window.innerWidth, window.innerHeight) * 2;
 
     const centerPan = () => ({
-        x: -(width / 2) + (window.innerWidth / 2),
-        y: -(height / 2) + (window.innerHeight / 2)
+        x: -(size / 2) + (window.innerWidth / 2),
+        y: -(size / 2) + (window.innerHeight / 2)
     });
 
     const {id} = useParams();
@@ -38,7 +37,7 @@ export function Map() {
         window.addEventListener('resize', updatePan);
         updatePan();
         return () => window.removeEventListener('resize', updatePan);
-    }, [window.innerWidth]);
+    }, [window.innerWidth, window.innerHeight]);
 
     useEffect(() => {
         fetchData();
@@ -55,8 +54,8 @@ export function Map() {
 
     const setPanBounded = newPan => {
         setPan({
-            x: Math.max(-width + window.innerWidth, Math.min(0, newPan.x)),
-            y: Math.max(-height + window.innerHeight, Math.min(0, newPan.y))
+            x: Math.max(-size + window.innerWidth, Math.min(0, newPan.x)),
+            y: Math.max(-size + window.innerHeight, Math.min(0, newPan.y))
         });
     };
 
@@ -147,8 +146,8 @@ export function Map() {
     };
 
     const mapStyle = {
-        width: `${width}px`,
-        height: `${height}px`,
+        width: `${size}px`,
+        height: `${size}px`,
         transform: `translate3d(${pan.x}px, ${pan.y}px, 0)`
     };
 
@@ -192,7 +191,7 @@ export function Map() {
             {isEmpty && <div className={styles.Start}>Click anywhere to start</div>}
             {initialised && !isEmpty && <MapControls isEmpty={isEmpty}/>}
             {initialised && !isEmpty &&
-            <MapPreview nodeList={nodeList} pan={pan} setPan={setPanBounded} width={width} height={height}/>}
+            <MapPreview nodeList={nodeList} pan={pan} setPan={setPanBounded} size={size}/>}
             {initialised && !isEmpty && <Legend/>}
         </div>
     );
