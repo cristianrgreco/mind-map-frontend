@@ -5,6 +5,8 @@ import {Line} from "./Line";
 import {noop} from "./events";
 import {Square} from "./Square";
 
+const scale = 0.075;
+
 export function MapPreview({nodeList, pan, setPan}) {
     const ref = useRef(null);
 
@@ -21,8 +23,8 @@ export function MapPreview({nodeList, pan, setPan}) {
         const x = (e.clientX - rect.left);
         const y = (e.clientY - rect.top)
 
-        const scaledX = x * (1 / 0.075); // todo extract scale to configuration
-        const scaledY = y * (1 / 0.075);
+        const scaledX = x * (1 / scale);
+        const scaledY = y * (1 / scale);
 
         const translatedX = scaledX - (window.innerWidth / 2);
         const translatedY = scaledY - (window.innerHeight / 2);
@@ -37,7 +39,7 @@ export function MapPreview({nodeList, pan, setPan}) {
 
     return (
         <div className={styles.MapPreviewContainer}>
-            <div className={styles.MapPreview} onClick={onClick} ref={ref}>
+            <div className={styles.MapPreview} style={{transform: `scale(${scale})`}} onClick={onClick} ref={ref}>
                 {nodeList.nodes.map(node => {
                     const parent = nodeList.getNode(node.parent);
                     return (
