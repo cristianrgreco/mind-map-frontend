@@ -182,15 +182,9 @@ export function Map() {
             </div>
             <MapControls isEmpty={isEmpty}/>
             <MapInfo initialised={initialised} isSaving={isSaving}/>
-            {!isEmpty && (
-                <MapPreview nodeList={nodeList} pan={pan} setPan={setPanBounded}/>
-            )}
-            {isEmpty && (
-                <div className={styles.Start}>Click anywhere to start</div>
-            )}
-            {!isEmpty && (
-                <Legend/>
-            )}
+            {isEmpty && <div className={styles.Start}>Click anywhere to start</div>}
+            {!isEmpty && <MapPreview nodeList={nodeList} pan={pan} setPan={setPanBounded}/>}
+            {!isEmpty && <Legend/>}
         </div>
     );
 }
