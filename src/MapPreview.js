@@ -5,9 +5,9 @@ import {Line} from "./Line";
 import {noop} from "./events";
 import {Square} from "./Square";
 
-const scale = 0.075;
-
 export function MapPreview({nodeList, pan, setPan, size}) {
+    const scale = 200 / size;
+
     const ref = useRef(null);
 
     const viewport = {
@@ -47,7 +47,7 @@ export function MapPreview({nodeList, pan, setPan, size}) {
         height: `${size}px`,
         top: `${-(size / 2)}px`,
         right: `${-(size / 2)}px`,
-        transform: `scale(${scale}) translate(-50%, 50%)`
+        transform: `scale(${scale}, ${scale}) translate(-50%, 50%)`
     };
 
     return (

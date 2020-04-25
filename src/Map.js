@@ -18,26 +18,25 @@ import {MapControls} from "./MapControls";
  *  - improve positioning/layering of elements on the canvas
  */
 export function Map() {
-    const size = Math.max(3000, (window.innerWidth * 2));
-
-    const centerPan = () => ({
+    const size = Math.max(window.innerWidth, window.innerHeight) * 2;
+    const centerPan = {
         x: -(size / 2) + (window.innerWidth / 2),
         y: -(size / 2) + (window.innerHeight / 2)
-    });
+    };
 
     const {id} = useParams();
     const [nodeList, setNodeList] = useState(new NodeList());
     const [startDrag, setStartDrag] = useState({type: null, id: null, x: 0, y: 0});
-    const [pan, setPan] = useState(centerPan());
+    const [pan, setPan] = useState(centerPan);
     const [initialised, setIsInitialised] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
 
     useLayoutEffect(() => {
-        const updatePan = () => setPanBounded(centerPan())
+        const updatePan = () => setPanBounded(centerPan)
         window.addEventListener('resize', updatePan);
         updatePan();
         return () => window.removeEventListener('resize', updatePan);
-    }, [window.innerWidth]);
+    }, [window.innerWidth, window.innerHeight]);
 
     useEffect(() => {
         fetchData();
@@ -190,7 +189,8 @@ export function Map() {
             <MapInfo initialised={initialised} isSaving={isSaving}/>
             {isEmpty && <div className={styles.Start}>Click anywhere to start</div>}
             {initialised && !isEmpty && <MapControls isEmpty={isEmpty}/>}
-            {initialised && !isEmpty && <MapPreview nodeList={nodeList} pan={pan} setPan={setPanBounded} size={size}/>}
+            {initialised && !isEmpty &&
+            <MapPreview nodeList={nodeList} pan={pan} setPan={setPanBounded} size={size}/>}
             {initialised && !isEmpty && <Legend/>}
         </div>
     );
