@@ -19,21 +19,20 @@ import {MapControls} from "./MapControls";
  */
 export function Map() {
     const size = Math.max(window.innerWidth, window.innerHeight) * 2;
-
-    const centerPan = () => ({
+    const centerPan = {
         x: -(size / 2) + (window.innerWidth / 2),
         y: -(size / 2) + (window.innerHeight / 2)
-    });
+    };
 
     const {id} = useParams();
     const [nodeList, setNodeList] = useState(new NodeList());
     const [startDrag, setStartDrag] = useState({type: null, id: null, x: 0, y: 0});
-    const [pan, setPan] = useState(centerPan());
+    const [pan, setPan] = useState(centerPan);
     const [initialised, setIsInitialised] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
 
     useLayoutEffect(() => {
-        const updatePan = () => setPanBounded(centerPan())
+        const updatePan = () => setPanBounded(centerPan)
         window.addEventListener('resize', updatePan);
         updatePan();
         return () => window.removeEventListener('resize', updatePan);
