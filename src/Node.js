@@ -2,6 +2,8 @@ import React, {useEffect, useRef} from 'react';
 import AutosizeInput from 'react-input-autosize';
 import styles from './Node.module.css';
 import dragImage from "./dragImage";
+import {faPencilAlt} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 export function Node({value, setValue, x, y, backgroundColor, setStartDrag, isNew, setIsNew, isSelected, setIsSelected, isRoot, isPreview}) {
     const ref = useRef(null);
@@ -51,13 +53,16 @@ export function Node({value, setValue, x, y, backgroundColor, setStartDrag, isNe
     return (
         <div
             ref={ref}
-            className={`${styles.Node} ${isSelected && styles.Selected} ${isNew && styles.New} ${isPreview && styles.Preview} ${isRoot && styles.Root}`}
+            className={`${styles.Node} ${isSelected && styles.Selected} ${isPreview && styles.Preview} ${isRoot && styles.Root}`}
             style={style}
             onClick={onClick}
             onDoubleClick={onDoubleClick}
             draggable={true}
             onDragStart={onDragStart}
         >
+            <div className={styles.Edit}>
+                {isNew && <FontAwesomeIcon icon={faPencilAlt}/>}
+            </div>
             {!isNew || isPreview
                 ? <span>{value}</span>
                 : <AutosizeInput

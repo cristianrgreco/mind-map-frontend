@@ -173,7 +173,7 @@ export class NodeList {
 
     getColour(node) {
         if (node.isRoot) {
-            return '#ccc';
+            return node.isSelected ? '#ccc' : '#aaa';
         }
 
         const rootNode = this.getRootNode();
@@ -183,7 +183,8 @@ export class NodeList {
 
         const hue = Math.floor(this._radiansToDegrees(Math.atan2(dy, dx)) + 180);
         const saturation = 100
-        const lightness = 30;
+        const lightness = node.isSelected ? 30 : 20;
+        // const lightness = 25;
 
         return `hsl(${hue},${saturation}%,${lightness}%)`
     }

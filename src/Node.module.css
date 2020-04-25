@@ -1,7 +1,7 @@
 .Node {
     display: inline-flex;
     position: absolute;
-    padding: 10px 15px;
+    padding: 14px 20px;
     border: 1px solid #ccc;
     border-radius: 8px;
     color: #ccc;
@@ -15,7 +15,6 @@
 }
 
 .Node.Root {
-    border-width: 5px;
     color: #333;
 }
 
@@ -23,24 +22,15 @@
     cursor: inherit;
 }
 
-.Node.Selected {
-    border-width: 5px;
-}
-
 .Node.Selected input {
     background-color: inherit;
 }
 
-.Node.New:before {
-    margin: 0;
-    padding: 0;
+.Node .Edit {
+    font-size: 12px;
     position: absolute;
     top: 2px;
-    right: 2px;
-    content: '*';
-    width: 14px;
-    height: 14px;
-    font: 20px sans-serif;
+    right: 4px;
 }
 
 .Node input {
