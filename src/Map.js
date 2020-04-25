@@ -35,7 +35,7 @@ export function Map() {
         window.addEventListener('resize', updatePan);
         updatePan();
         return () => window.removeEventListener('resize', updatePan);
-    }, []);
+    }, [window.innerWidth]);
 
     useEffect(() => {
         fetchData();

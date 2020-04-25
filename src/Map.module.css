@@ -1,6 +1,10 @@
 .Map {
-    background-color: #333333;
     cursor: grab;
+    background-color: #333333;
+}
+
+.Map:focus {
+    outline: none;
 }
 
 .Map.Empty {

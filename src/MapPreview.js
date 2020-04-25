@@ -45,7 +45,9 @@ export function MapPreview({nodeList, pan, setPan, size}) {
     const mapStyle = {
         width: `${size}px`,
         height: `${size}px`,
-        transform: `scale(${scale})`
+        top: `${-(size / 2)}px`,
+        right: `${-(size / 2)}px`,
+        transform: `scale(${scale}) translate(-50%, 50%)`
     };
 
     return (

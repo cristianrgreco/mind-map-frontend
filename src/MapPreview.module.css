@@ -10,7 +10,5 @@
 }
 
 .MapPreview {
-    position: fixed;
-    top: -1388px;
-    right: -1388px;
+    position: absolute;
 }
