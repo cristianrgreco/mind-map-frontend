@@ -10,7 +10,6 @@ import {fetchMindMap, saveMindMap} from "./api";
 import {MapPreview} from "./MapPreview";
 import {MapInfo} from "./MapInfo";
 import {MapControls} from "./MapControls";
-import {convertRange} from "./range";
 
 /* todo
  *  - double clicking node doesn't select it
@@ -18,8 +17,6 @@ import {convertRange} from "./range";
  */
 export function Map() {
     const size = Math.max(3000, window.innerWidth);
-    const origin = {x: size / 2, y: size / 2};
-    const convertRangeForHue = convertRange([0, size / 2], [0, 365]); // todo should it be size or window width
 
     const centerPan = () => ({
         x: -(size / 2) + (window.innerWidth / 2),
@@ -146,16 +143,6 @@ export function Map() {
         }
     };
 
-    const getNodeBackgroundColor = node => {
-        const distance = Math.hypot(node.x - origin.x, node.y - origin.y)
-
-        const hue = Math.floor(convertRangeForHue(distance));
-        const saturation = 100;
-        const lightness = 15;
-
-        return `hsl(${hue},${saturation}%,${lightness}%)`
-    };
-
     const mapStyle = {
         width: `${size}px`,
         height: `${size}px`,
@@ -180,7 +167,7 @@ export function Map() {
                                 setValue={setValue(node)}
                                 x={node.x}
                                 y={node.y}
-                                backgroundColor={getNodeBackgroundColor(node)}
+                                backgroundColor={nodeList.getColour(node)}
                                 setStartDrag={setNodeDragStart(node)}
                                 isNew={node.isNew}
                                 setIsNew={setIsNew(node)}
@@ -201,8 +188,7 @@ export function Map() {
             <MapControls isEmpty={isEmpty}/>
             <MapInfo initialised={initialised} isSaving={isSaving}/>
             {isEmpty && <div className={styles.Start}>Click anywhere to start</div>}
-            {!isEmpty && <MapPreview nodeList={nodeList} pan={pan} setPan={setPanBounded} size={size}
-                                     getNodeBackgroundColor={getNodeBackgroundColor}/>}
+            {!isEmpty && <MapPreview nodeList={nodeList} pan={pan} setPan={setPanBounded} size={size}/>}
             {!isEmpty && <Legend/>}
         </div>
     );

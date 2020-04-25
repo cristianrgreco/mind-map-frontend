@@ -15,7 +15,7 @@
 }
 
 .Node.Root {
-    background-color: #ccc !important;
+    border-width: 5px;
     color: #333;
 }
 
@@ -24,12 +24,7 @@
 }
 
 .Node.Selected {
-    font-weight: bold;
-    border-width: 3px;
-}
-
-.Node.Selected input {
-    font-weight: bold;
+    border-width: 5px;
 }
 
 .Node.Selected input {

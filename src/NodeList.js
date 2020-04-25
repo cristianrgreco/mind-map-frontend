@@ -171,8 +171,29 @@ export class NodeList {
         return new NodeList(this.idGenerator, nodes, selectedNodes, this.lastAddedNode);
     }
 
+    getColour(node) {
+        if (node.isRoot) {
+            return '#ccc';
+        }
+
+        const rootNode = this.getRootNode();
+
+        const dx = node.x - rootNode.x;
+        const dy = node.y - rootNode.y;
+
+        const hue = Math.floor(this._radiansToDegrees(Math.atan2(dy, dx)) + 180);
+        const saturation = 100
+        const lightness = 30;
+
+        return `hsl(${hue},${saturation}%,${lightness}%)`
+    }
+
     getNode(id) {
         return this.nodes.find(node => node.id === id);
+    }
+
+    getRootNode() {
+        return this.nodes.find(node => node.isRoot);
     }
 
     getSelectedNode() {
@@ -185,5 +206,9 @@ export class NodeList {
 
     _isOnlyNode() {
         return this.nodes.length === 0;
+    }
+
+    _radiansToDegrees(radians) {
+        return radians * (180 / Math.PI);
     }
 }

@@ -7,7 +7,7 @@ import {Square} from "./Square";
 
 const scale = 0.075;
 
-export function MapPreview({nodeList, pan, setPan, size, getNodeBackgroundColor}) {
+export function MapPreview({nodeList, pan, setPan, size}) {
     const ref = useRef(null);
 
     const viewport = {
@@ -60,7 +60,7 @@ export function MapPreview({nodeList, pan, setPan, size, getNodeBackgroundColor}
                                 setValue={noop}
                                 x={node.x}
                                 y={node.y}
-                                backgroundColor={getNodeBackgroundColor(node)}
+                                backgroundColor={nodeList.getColour(node)}
                                 setStartDrag={noop}
                                 isNew={node.isNew}
                                 setIsNew={noop}
