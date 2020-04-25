@@ -4,18 +4,16 @@ import styles from "./MapControls.module.css";
 import linkStyles from "./Link.module.css";
 import {Button} from "./Button";
 
-export function MapControls({isEmpty}) {
+export function MapControls() {
     return (
         <div className={styles.Controls}>
-            {!isEmpty && (
-                <div className={styles.ControlItem}>
-                    <Link className={linkStyles.NoTextDecoration} to="/">
-                        <Button onClick={e => e.stopPropagation()}>
-                            <span>New</span>
-                        </Button>
-                    </Link>
-                </div>
-            )}
+            <div className={styles.ControlItem}>
+                <Link className={linkStyles.NoTextDecoration} to="/">
+                    <Button onClick={e => e.stopPropagation()}>
+                        <span>New</span>
+                    </Button>
+                </Link>
+            </div>
         </div>
     );
 }

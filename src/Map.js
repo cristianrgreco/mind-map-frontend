@@ -186,11 +186,11 @@ export function Map() {
                     );
                 })}
             </div>
-            <MapControls isEmpty={isEmpty}/>
             <MapInfo initialised={initialised} isSaving={isSaving}/>
             {isEmpty && <div className={styles.Start}>Click anywhere to start</div>}
-            {!isEmpty && <MapPreview nodeList={nodeList} pan={pan} setPan={setPanBounded} size={size}/>}
-            {!isEmpty && <Legend/>}
+            {initialised && !isEmpty && <MapControls isEmpty={isEmpty}/>}
+            {initialised && !isEmpty && <MapPreview nodeList={nodeList} pan={pan} setPan={setPanBounded} size={size}/>}
+            {initialised && !isEmpty && <Legend/>}
         </div>
     );
 }
