@@ -248,7 +248,7 @@ export function Map() {
                         <svg className={styles.Viewport}>
                             <polyline
                                 points={`${viewport.x},${viewport.y} ${viewport.x},${viewport.y + viewport.h} ${viewport.x + viewport.w},${viewport.y + viewport.h} ${viewport.x + viewport.w},${viewport.y} ${viewport.x},${viewport.y}`}
-                                style={{fill: 'none', stroke: '#ccc', strokeWidth: '15'}}
+                                style={{fill: 'none', stroke: '#ccc', strokeOpacity: '0.5', strokeWidth: '15'}}
                             />
                         </svg>
                     </div>
