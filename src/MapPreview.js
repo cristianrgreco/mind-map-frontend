@@ -3,6 +3,7 @@ import styles from "./MapPreview.module.css";
 import {Node} from "./Node";
 import {Line} from "./Line";
 import {noop} from "./events";
+import {Square} from "./Square";
 
 export function MapPreview({nodeList, pan, setPan}) {
     const ref = useRef(null);
@@ -20,7 +21,7 @@ export function MapPreview({nodeList, pan, setPan}) {
         const x = (e.clientX - rect.left);
         const y = (e.clientY - rect.top)
 
-        const scaledX = x * (1 / 0.075);
+        const scaledX = x * (1 / 0.075); // todo extract scale to configuration
         const scaledY = y * (1 / 0.075);
 
         const translatedX = scaledX - (window.innerWidth / 2);
@@ -63,12 +64,7 @@ export function MapPreview({nodeList, pan, setPan}) {
                         </Fragment>
                     );
                 })}
-                <svg className={styles.Viewport}>
-                    <polyline
-                        points={`${viewport.x},${viewport.y} ${viewport.x},${viewport.y + viewport.h} ${viewport.x + viewport.w},${viewport.y + viewport.h} ${viewport.x + viewport.w},${viewport.y} ${viewport.x},${viewport.y}`}
-                        style={{fill: 'none', stroke: '#ccc', strokeWidth: '15'}}
-                    />
-                </svg>
+                <Square rect={viewport}/>
             </div>
         </div>
     );
