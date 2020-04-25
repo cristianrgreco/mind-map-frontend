@@ -12,6 +12,7 @@ import {MapInfo} from "./MapInfo";
 import {MapControls} from "./MapControls";
 
 /* todo
+ *  - perf enhancement in calculating node colours when updated?
  *  - double clicking node doesn't select it
  *  - improve positioning/layering of elements on the canvas
  */

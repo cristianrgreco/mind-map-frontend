@@ -4,8 +4,8 @@
     font: 14px sans-serif;
     color: #ccc;
     position: fixed;
-    left: calc(100% - 23px);
-    top: calc(100% - 23px);
+    left: calc(100% - 25px);
+    top: calc(100% - 25px);
     transform: translate(-100%, -100%);
 }
 

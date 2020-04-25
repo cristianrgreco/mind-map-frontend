@@ -1,11 +1,12 @@
 .Info {
     width: 100%;
-    text-align: right;
+    text-align: left;
     font: 14px sans-serif;
     color: #ccc;
     position: fixed;
-    left: calc(-100% + 90px);
-    top: calc(100% - 40px);
+    bottom: 25px;
+    left: calc(100% + 25px);
+    transform: translate(-100%, 0);
 }
 
 .Info .InfoItem {

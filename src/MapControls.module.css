@@ -5,9 +5,9 @@
     font: 14px sans-serif;
     color: #ccc;
     position: fixed;
-    left: calc(100% + 15px);
-    top: calc(40px);
-    transform: translate(-100%, -100%);
+    top: 25px;
+    left: calc(100% + 25px);
+    transform: translate(-100%, 0);
 }
 
 .Controls .ControlItem {
