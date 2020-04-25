@@ -8,14 +8,23 @@
     cursor: grab;
 }
 
-.MapPreview {
+.MapPreviewContainer {
+    width: 225px;
+    height: 225px;
     z-index: 20;
-    background-color: #333333;
     position: fixed;
+    top: 25px;
+    right: 25px;
+    background-color: #333333;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.MapPreview {
+    position: fixed;
+    top: -1360px;
+    right: -1360px;
     transform: scale(0.075);
-    top: -1370px;
-    right: -1370px;
-    border: 5px solid #ccc;
 }
 
 .Viewport {

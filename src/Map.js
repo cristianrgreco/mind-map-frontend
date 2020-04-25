@@ -213,45 +213,45 @@ export function Map() {
                 })}
             </div>
             {!isEmpty && (
-                <div className={styles.MapPreview} onClick={onClickPreview} ref={previewRef}>
-                    {nodeList.nodes.map(node => {
-                        const parent = nodeList.getNode(node.parent);
-                        return (
-                            <Fragment key={node.id}>
-                                <Node
-                                    value={node.value}
-                                    setValue={() => {
-                                    }}
-                                    x={node.x}
-                                    y={node.y}
-                                    setStartDrag={() => {
-                                    }}
-                                    isNew={node.isNew}
-                                    setIsNew={() => {
-                                    }}
-                                    isSelected={node.isSelected}
-                                    setIsSelected={() => {
-                                    }}
-                                    isPreview={true}
-                                    isRoot={node.isRoot}
-                                />
-                                {!node.isRoot && (
-                                    <Line
-                                        from={{x: node.x, y: node.y, w: node.width, h: node.height}}
-                                        to={{x: parent.x, y: parent.y, w: parent.width, h: parent.height}}
+                <div className={styles.MapPreviewContainer}>
+                    <div className={styles.MapPreview} onClick={onClickPreview} ref={previewRef}>
+                        {nodeList.nodes.map(node => {
+                            const parent = nodeList.getNode(node.parent);
+                            return (
+                                <Fragment key={node.id}>
+                                    <Node
+                                        value={node.value}
+                                        setValue={() => {
+                                        }}
+                                        x={node.x}
+                                        y={node.y}
+                                        setStartDrag={() => {
+                                        }}
+                                        isNew={node.isNew}
+                                        setIsNew={() => {
+                                        }}
+                                        isSelected={node.isSelected}
+                                        setIsSelected={() => {
+                                        }}
+                                        isPreview={true}
+                                        isRoot={node.isRoot}
                                     />
-                                )}
-                            </Fragment>
-                        );
-                    })}
-                    {
+                                    {!node.isRoot && (
+                                        <Line
+                                            from={{x: node.x, y: node.y, w: node.width, h: node.height}}
+                                            to={{x: parent.x, y: parent.y, w: parent.width, h: parent.height}}
+                                        />
+                                    )}
+                                </Fragment>
+                            );
+                        })}
                         <svg className={styles.Viewport}>
                             <polyline
                                 points={`${viewport.x},${viewport.y} ${viewport.x},${viewport.y + viewport.h} ${viewport.x + viewport.w},${viewport.y + viewport.h} ${viewport.x + viewport.w},${viewport.y} ${viewport.x},${viewport.y}`}
-                                style={{fill: 'none', stroke: '#ccc', strokeWidth: '5'}}
+                                style={{fill: 'none', stroke: '#ccc', strokeWidth: '15'}}
                             />
                         </svg>
-                    }
+                    </div>
                 </div>
             )}
             {isEmpty && (
