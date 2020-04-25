@@ -1,0 +1,21 @@
+.Info {
+    width: 100%;
+    text-align: right;
+    font: 14px sans-serif;
+    color: #ccc;
+    position: fixed;
+    left: calc(-100% + 90px);
+    top: calc(100% - 40px);
+}
+
+.Info .InfoItem {
+    line-height: 20px;
+    font-variant: small-caps;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ItemIcon {
+    margin-left: 8px;
+}

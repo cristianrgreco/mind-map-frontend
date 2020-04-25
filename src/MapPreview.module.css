@@ -1,0 +1,24 @@
+.MapPreview,
+.Viewport {
+    width: 3000px;
+    height: 3000px;
+}
+
+.MapPreviewContainer {
+    width: 225px;
+    height: 225px;
+    z-index: 20;
+    position: fixed;
+    top: 25px;
+    right: 25px;
+    background-color: #333333;
+    filter: brightness(1.5);
+    cursor: pointer;
+}
+
+.MapPreview {
+    position: fixed;
+    top: -1388px;
+    right: -1388px;
+    transform: scale(0.075);
+}

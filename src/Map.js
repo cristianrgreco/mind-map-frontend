@@ -1,7 +1,5 @@
-import React, {Fragment, useEffect, useLayoutEffect, useRef, useState} from "react";
-import {Link, useParams} from 'react-router-dom';
-import {faSync} from "@fortawesome/free-solid-svg-icons";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import React, {Fragment, useEffect, useLayoutEffect, useState} from "react";
+import {useParams} from 'react-router-dom';
 import styles from './Map.module.css';
 import {Node} from "./Node";
 import {Line} from "./Line";
@@ -9,46 +7,37 @@ import {NodeList} from "./NodeList";
 import dragImage from "./dragImage";
 import {Legend} from "./Legend";
 import {fetchMindMap, saveMindMap} from "./api";
+import {MapPreview} from "./MapPreview";
+import {MapInfo} from "./MapInfo";
+import {MapControls} from "./MapControls";
 
 /* todo
- *  - clean up code, refactor out components like Preview, Controls, etc
  *  - double clicking node doesn't select it
  *  - improve positioning/layering of elements on the canvas
  */
 
 const size = 3000;
+const serverUpdateDebounce = 1000;
+
+const centerPan = () => ({
+    x: -(size / 2) + (window.innerWidth / 2),
+    y: -(size / 2) + (window.innerHeight / 2)
+});
 
 export function Map() {
-    const previewRef = useRef(null);
     const {id} = useParams();
     const [nodeList, setNodeList] = useState(new NodeList());
     const [startDrag, setStartDrag] = useState({type: null, id: null, x: 0, y: 0});
-    const [pan, setPan] = useState({
-        x: -(size / 2) + (window.innerWidth / 2),
-        y: -(size / 2) + (window.innerHeight / 2)
-    });
+    const [pan, setPan] = useState(centerPan());
     const [initialised, setIsInitialised] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
 
     useLayoutEffect(() => {
-        function updatePan() {
-            setPanBounded({
-                x: -(size / 2) + (window.innerWidth / 2),
-                y: -(size / 2) + (window.innerHeight / 2)
-            });
-        }
-
+        const updatePan = () => setPanBounded(centerPan())
         window.addEventListener('resize', updatePan);
         updatePan();
         return () => window.removeEventListener('resize', updatePan);
     }, []);
-
-    const setPanBounded = newPan => {
-        setPan({
-            x: Math.max(-size + window.innerWidth, Math.min(0, newPan.x)),
-            y: Math.max(-size + window.innerHeight, Math.min(0, newPan.y))
-        });
-    };
 
     useEffect(() => {
         fetchData();
@@ -56,12 +45,19 @@ export function Map() {
 
     useEffect(() => {
         if (initialised) {
-            const handler = setTimeout(() => saveData(), 1000);
+            const handler = setTimeout(() => saveData(), serverUpdateDebounce);
             return () => clearTimeout(handler);
         }
     }, [nodeList, pan]);
 
     const isEmpty = initialised && nodeList.nodes.length === 0;
+
+    const setPanBounded = newPan => {
+        setPan({
+            x: Math.max(-size + window.innerWidth, Math.min(0, newPan.x)),
+            y: Math.max(-size + window.innerHeight, Math.min(0, newPan.y))
+        });
+    };
 
     const fetchData = async () => {
         const result = await fetchMindMap(id);
@@ -108,26 +104,6 @@ export function Map() {
         }
     };
 
-    const onClickPreview = e => {
-        const previewRect = previewRef.current.getBoundingClientRect();
-
-        const x = (e.clientX - previewRect.left);
-        const y = (e.clientY - previewRect.top)
-
-        const scaledX = x * (1 / 0.075);
-        const scaledY = y * (1 / 0.075);
-
-        const translatedX = scaledX - (window.innerWidth / 2);
-        const translatedY = scaledY - (window.innerHeight / 2);
-
-        setPanBounded({
-            x: -translatedX,
-            y: -translatedY
-        })
-
-        e.stopPropagation();
-    }
-
     const setValue = node => (value, width, height) =>
         setNodeList(nodeList.setValue(node.id, value, width, height));
 
@@ -169,18 +145,11 @@ export function Map() {
         }
     };
 
-    const viewport = {
-        x: Math.abs(pan.x),
-        y: Math.abs(pan.y),
-        w: window.innerWidth,
-        h: window.innerHeight
-    };
-
     return (
         <div onClick={onClick} onKeyDown={onKeyDown} onDragOver={onDragOver}>
             <div
-                style={{transform: `translate3d(${pan.x}px, ${pan.y}px, 0)`}}
                 tabIndex={0}
+                style={{transform: `translate3d(${pan.x}px, ${pan.y}px, 0)`}}
                 className={`${styles.Map} ${isEmpty && styles.Empty}`}
                 draggable={true}
                 onDragStart={onDragStart}
@@ -211,76 +180,14 @@ export function Map() {
                     );
                 })}
             </div>
+            <MapControls isEmpty={isEmpty}/>
+            <MapInfo initialised={initialised} isSaving={isSaving}/>
             {!isEmpty && (
-                <div className={styles.MapPreviewContainer}>
-                    <div className={styles.MapPreview} onClick={onClickPreview} ref={previewRef}>
-                        {nodeList.nodes.map(node => {
-                            const parent = nodeList.getNode(node.parent);
-                            return (
-                                <Fragment key={node.id}>
-                                    <Node
-                                        value={node.value}
-                                        setValue={() => {
-                                        }}
-                                        x={node.x}
-                                        y={node.y}
-                                        setStartDrag={() => {
-                                        }}
-                                        isNew={node.isNew}
-                                        setIsNew={() => {
-                                        }}
-                                        isSelected={node.isSelected}
-                                        setIsSelected={() => {
-                                        }}
-                                        isPreview={true}
-                                        isRoot={node.isRoot}
-                                    />
-                                    {!node.isRoot && (
-                                        <Line
-                                            from={{x: node.x, y: node.y, w: node.width, h: node.height}}
-                                            to={{x: parent.x, y: parent.y, w: parent.width, h: parent.height}}
-                                        />
-                                    )}
-                                </Fragment>
-                            );
-                        })}
-                        <svg className={styles.Viewport}>
-                            <polyline
-                                points={`${viewport.x},${viewport.y} ${viewport.x},${viewport.y + viewport.h} ${viewport.x + viewport.w},${viewport.y + viewport.h} ${viewport.x + viewport.w},${viewport.y} ${viewport.x},${viewport.y}`}
-                                style={{fill: 'none', stroke: '#ccc', strokeWidth: '15'}}
-                            />
-                        </svg>
-                    </div>
-                </div>
+                <MapPreview nodeList={nodeList} pan={pan} setPan={setPanBounded}/>
             )}
             {isEmpty && (
                 <div className={styles.Start}>Click anywhere to start</div>
             )}
-            <div className={styles.Controls}>
-                {initialised && nodeList.nodes.length > 0 && (
-                    <div className={styles.ControlItem}>
-                        <Link className={styles.Link} to="/">
-                            <div className={styles.Button} onClick={e => e.stopPropagation()}>
-                                <span>New</span>
-                            </div>
-                        </Link>
-                    </div>
-                )}
-            </div>
-            <div className={styles.Info}>
-                {!initialised && (
-                    <div>
-                        <span className={styles.InfoItem}>Loading</span>
-                        <span className={styles.ItemIcon}><FontAwesomeIcon icon={faSync} spin={true}/></span>
-                    </div>
-                )}
-                {isSaving && (
-                    <div>
-                        <span className={styles.InfoItem}>Saving</span>
-                        <span className={styles.ItemIcon}><FontAwesomeIcon icon={faSync} spin={true}/></span>
-                    </div>
-                )}
-            </div>
             {!isEmpty && (
                 <Legend/>
             )}
