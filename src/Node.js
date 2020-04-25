@@ -46,7 +46,7 @@ export function Node({value, setValue, x, y, setStartDrag, isNew, setIsNew, isSe
     return (
         <div
             ref={ref}
-            className={`${styles.Node} ${isSelected && styles.Selected} ${isNew && styles.New} ${isRoot && styles.Root}`}
+            className={`${styles.Node} ${isSelected && styles.Selected} ${isNew && styles.New} ${isPreview && styles.Preview} ${isRoot && styles.Root}`}
             style={{transform: `translate3d(${x}px, ${y}px, 0)`}}
             onClick={onClick}
             onDoubleClick={onDoubleClick}

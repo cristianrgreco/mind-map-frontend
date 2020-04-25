@@ -15,6 +15,10 @@
     cursor: move;
 }
 
+.Node.Preview:hover {
+    cursor: inherit;
+}
+
 .Node.Root {
     font-weight: bold;
     border-width: 3px;
