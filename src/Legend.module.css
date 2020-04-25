@@ -1,5 +1,5 @@
 .Legend {
-    width: 250px;
+    pointer-events: none;
     text-align: right;
     font: 14px sans-serif;
     color: #ccc;
@@ -10,6 +10,7 @@
 }
 
 .Legend .LegendItem {
+    white-space: nowrap;
     line-height: 20px;
     font-variant: small-caps;
 }

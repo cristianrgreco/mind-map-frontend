@@ -1,13 +1,11 @@
 .Controls {
     z-index: 5;
-    width: 100%;
     text-align: left;
     font: 14px sans-serif;
     color: #ccc;
     position: fixed;
     top: 25px;
-    left: calc(100% + 25px);
-    transform: translate(-100%, 0);
+    left: 25px;
 }
 
 .Controls .ControlItem {
