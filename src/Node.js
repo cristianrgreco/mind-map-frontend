@@ -3,7 +3,7 @@ import AutosizeInput from 'react-input-autosize';
 import styles from './Node.module.css';
 import dragImage from "./dragImage";
 
-export function Node({value, setValue, x, y, setStartDrag, isNew, setIsNew, isSelected, setIsSelected, isRoot}) {
+export function Node({value, setValue, x, y, setStartDrag, isNew, setIsNew, isSelected, setIsSelected, isRoot, isPreview}) {
     const ref = useRef(null);
 
     useEffect(() => {
@@ -46,14 +46,14 @@ export function Node({value, setValue, x, y, setStartDrag, isNew, setIsNew, isSe
     return (
         <div
             ref={ref}
-            className={`${styles.Node} ${isSelected && styles.Selected} ${isNew && styles.New} ${isRoot && styles.Root}`}
+            className={`${styles.Node} ${isSelected && styles.Selected} ${isNew && styles.New} ${isPreview && styles.Preview} ${isRoot && styles.Root}`}
             style={{transform: `translate3d(${x}px, ${y}px, 0)`}}
             onClick={onClick}
             onDoubleClick={onDoubleClick}
             draggable={true}
             onDragStart={onDragStart}
         >
-            {!isNew
+            {!isNew || isPreview
                 ? <span>{value}</span>
                 : <AutosizeInput
                     name={value}

@@ -1,8 +1,30 @@
+.Map, .MapPreview, .Viewport {
+    width: 3000px;
+    height: 3000px;
+}
+
 .Map {
-    width: 10000px;
-    height: 10000px;
     background-color: #333333;
     cursor: grab;
+}
+
+.MapPreviewContainer {
+    width: 225px;
+    height: 225px;
+    z-index: 20;
+    position: fixed;
+    top: 25px;
+    right: 25px;
+    background-color: #333333;
+    filter: brightness(1.5);
+    cursor: pointer;
+}
+
+.MapPreview {
+    position: fixed;
+    top: -1388px;
+    right: -1388px;
+    transform: scale(0.075);
 }
 
 .Map.Empty {
@@ -77,9 +99,8 @@
     color: #ccc;
     opacity: .5;
     position: fixed;
-    left: calc(100% - 23px);
-    top: calc(37px);
-    transform: translate(-100%, -100%);
+    left: calc(-100% + 90px);
+    top: calc(100% - 40px);
 }
 
 .Info .InfoItem {
