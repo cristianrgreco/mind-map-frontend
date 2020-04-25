@@ -11,8 +11,7 @@ import {Legend} from "./Legend";
 import {fetchMindMap, saveMindMap} from "./api";
 
 /* todo
- *  - allow clicking on preview to go there
- *  - put the preview in a container which we can put border/style properly
+ *  - clean up code, refactor out components like Preview, Controls, etc
  *  - double clicking node doesn't select it
  *  - improve positioning/layering of elements on the canvas
  */
