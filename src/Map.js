@@ -12,12 +12,13 @@ import {MapInfo} from "./MapInfo";
 import {MapControls} from "./MapControls";
 
 /* todo
+ *  - resize doesn't reset pan to center
  *  - perf enhancement in calculating node colours when updated?
  *  - double clicking node doesn't select it
  *  - improve positioning/layering of elements on the canvas
  */
 export function Map() {
-    const size = Math.max(3000, window.innerWidth);
+    const size = Math.max(3000, (window.innerWidth * 2));
 
     const centerPan = () => ({
         x: -(size / 2) + (window.innerWidth / 2),
