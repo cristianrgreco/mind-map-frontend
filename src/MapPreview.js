@@ -5,9 +5,9 @@ import {Line} from "./Line";
 import {noop} from "./events";
 import {Square} from "./Square";
 
-const scale = 0.075;
+export function MapPreview({nodeList, pan, setPan, width, height}) {
+    const scale = 225 / (Math.max(width, height));
 
-export function MapPreview({nodeList, pan, setPan, size}) {
     const ref = useRef(null);
 
     const viewport = {
@@ -38,15 +38,15 @@ export function MapPreview({nodeList, pan, setPan, size}) {
     }
 
     const containerStyle = {
-        width: `${size * scale}px`,
-        height: `${size * scale}px`
+        width: `${width * scale}px`,
+        height: `${height * scale}px`
     }
 
     const mapStyle = {
-        width: `${size}px`,
-        height: `${size}px`,
-        top: `${-(size / 2)}px`,
-        right: `${-(size / 2)}px`,
+        width: `${width}px`,
+        height: `${height}px`,
+        top: `${-(height / 2)}px`,
+        right: `${-(width / 2)}px`,
         transform: `scale(${scale}) translate(-50%, 50%)`
     };
 

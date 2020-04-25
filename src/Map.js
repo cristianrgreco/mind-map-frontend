@@ -18,11 +18,12 @@ import {MapControls} from "./MapControls";
  *  - improve positioning/layering of elements on the canvas
  */
 export function Map() {
-    const size = Math.max(3000, (window.innerWidth * 2));
+    const width = window.innerWidth * 2;
+    const height = window.innerHeight * 2;
 
     const centerPan = () => ({
-        x: -(size / 2) + (window.innerWidth / 2),
-        y: -(size / 2) + (window.innerHeight / 2)
+        x: -(width / 2) + (window.innerWidth / 2),
+        y: -(height / 2) + (window.innerHeight / 2)
     });
 
     const {id} = useParams();
@@ -54,8 +55,8 @@ export function Map() {
 
     const setPanBounded = newPan => {
         setPan({
-            x: Math.max(-size + window.innerWidth, Math.min(0, newPan.x)),
-            y: Math.max(-size + window.innerHeight, Math.min(0, newPan.y))
+            x: Math.max(-width + window.innerWidth, Math.min(0, newPan.x)),
+            y: Math.max(-height + window.innerHeight, Math.min(0, newPan.y))
         });
     };
 
@@ -146,8 +147,8 @@ export function Map() {
     };
 
     const mapStyle = {
-        width: `${size}px`,
-        height: `${size}px`,
+        width: `${width}px`,
+        height: `${height}px`,
         transform: `translate3d(${pan.x}px, ${pan.y}px, 0)`
     };
 
@@ -190,7 +191,8 @@ export function Map() {
             <MapInfo initialised={initialised} isSaving={isSaving}/>
             {isEmpty && <div className={styles.Start}>Click anywhere to start</div>}
             {initialised && !isEmpty && <MapControls isEmpty={isEmpty}/>}
-            {initialised && !isEmpty && <MapPreview nodeList={nodeList} pan={pan} setPan={setPanBounded} size={size}/>}
+            {initialised && !isEmpty &&
+            <MapPreview nodeList={nodeList} pan={pan} setPan={setPanBounded} width={width} height={height}/>}
             {initialised && !isEmpty && <Legend/>}
         </div>
     );
