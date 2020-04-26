@@ -71,7 +71,7 @@ export function Map() {
 
         if (result.status === 200) {
             const {nodeList, pan} = result.data;
-            setNodeList(new NodeList(undefined, nodeList.nodes, nodeList.selectedNodes, nodeList.lastAddedNode));
+            setNodeList(new NodeList(undefined, nodeList.nodes, nodeList.selectedNodes));
             setPanBounded({x: pan.x, y: pan.y});
         }
 
@@ -84,8 +84,7 @@ export function Map() {
         const data = {
             nodeList: {
                 nodes: nodeList.nodes,
-                selectedNodes: nodeList.selectedNodes,
-                lastAddedNode: nodeList.lastAddedNode
+                selectedNodes: nodeList.selectedNodes
             },
             pan: {
                 x: pan.x,
