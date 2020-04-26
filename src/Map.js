@@ -13,8 +13,6 @@ import {MapControls} from "./MapControls";
 
 /* todo
  *  - add behaviour tests (on click, etc) for Map
- *  - set the new node to be selected
- *  - click to add node, and click back on previous node leaves node behind empty
  *  - perf enhancement in calculating node colours when updated?
  *  - double clicking node doesn't select it
  *  - improve positioning/layering of elements on the canvas
