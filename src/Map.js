@@ -12,31 +12,24 @@ import {MapInfo} from "./MapInfo";
 import {MapControls} from "./MapControls";
 
 /* todo
- *  - resize doesn't reset pan to center
+ *  - add behaviour tests (on click, etc) for Map
+ *  - set the new node to be selected
+ *  - click to add node, and click back on previous node leaves node behind empty
  *  - perf enhancement in calculating node colours when updated?
  *  - double clicking node doesn't select it
  *  - improve positioning/layering of elements on the canvas
  */
 export function Map() {
     const size = Math.max(window.innerWidth, window.innerHeight) * 2;
-    const centerPan = {
-        x: -(size / 2) + (window.innerWidth / 2),
-        y: -(size / 2) + (window.innerHeight / 2)
-    };
-
     const {id} = useParams();
     const [nodeList, setNodeList] = useState(new NodeList());
     const [startDrag, setStartDrag] = useState({type: null, id: null, x: 0, y: 0});
-    const [pan, setPan] = useState(centerPan);
+    const [pan, setPan] = useState({
+        x: -(size / 2) + (window.innerWidth / 2),
+        y: -(size / 2) + (window.innerHeight / 2)
+    });
     const [initialised, setIsInitialised] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
-
-    useLayoutEffect(() => {
-        const updatePan = () => setPanBounded(centerPan)
-        window.addEventListener('resize', updatePan);
-        updatePan();
-        return () => window.removeEventListener('resize', updatePan);
-    }, [window.innerWidth, window.innerHeight]);
 
     useEffect(() => {
         fetchData();
@@ -49,13 +42,30 @@ export function Map() {
         }
     }, [nodeList, pan]);
 
+    useLayoutEffect(() => {
+        const updateSize = () => setPanBounded(pan => ({...pan}));
+        window.addEventListener('resize', updateSize);
+        updateSize();
+        return () => window.removeEventListener('resize', updateSize);
+    }, [window.innerWidth, window.innerHeight]);
+
     const isEmpty = initialised && nodeList.nodes.length === 0;
 
-    const setPanBounded = newPan => {
-        setPan({
-            x: Math.max(-size + window.innerWidth, Math.min(0, newPan.x)),
-            y: Math.max(-size + window.innerHeight, Math.min(0, newPan.y))
-        });
+    const setPanBounded = pan => {
+        if (typeof pan === 'function') {
+            setPan(currentPan => {
+                const newPan = pan(currentPan);
+                return {
+                    x: Math.max(-size + window.innerWidth, Math.min(0, newPan.x)),
+                    y: Math.max(-size + window.innerHeight, Math.min(0, newPan.y))
+                };
+            })
+        } else {
+            setPan({
+                x: Math.max(-size + window.innerWidth, Math.min(0, pan.x)),
+                y: Math.max(-size + window.innerHeight, Math.min(0, pan.y))
+            });
+        }
     };
 
     const fetchData = async () => {
