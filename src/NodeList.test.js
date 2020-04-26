@@ -26,59 +26,10 @@ describe('NodeList', () => {
 
             const result = setup.addNode(100, 100);
 
-            const expectedNode1 = aNode({isNew: false});
-            const expectedNode2 = aNode({id: 'id-2', isRoot: false, isSelected: false, parent: expectedNode1.id});
+            const expectedNode1 = aNode({isNew: false, isSelected: false});
+            const expectedNode2 = aNode({id: 'id-2', isRoot: false, isSelected: true, parent: expectedNode1.id});
             expect(result.nodes).toEqual([expectedNode1, expectedNode2]);
-            expect(result.selectedNodes).toEqual([expectedNode1.id]);
-        });
-    });
-
-    describe('#cancelAddNode', () => {
-        it('should cancel adding a node and reset the selected node', () => {
-            const setup = nodeList.addNode(100, 100);
-
-            const result = setup.cancelAddNode();
-
-            expect(result.nodes).toEqual([]);
-            expect(result.selectedNodes).toEqual([]);
-        });
-
-        it('should not cancel adding a node if the node is not new', () => {
-            const setup = nodeList
-                .addNode(100, 100)
-                .setIsNew('id-1', false);
-
-            const result = setup.cancelAddNode();
-
-            const expectedNode = aNode({isNew: false});
-            expect(result.nodes).toEqual([expectedNode]);
-            expect(result.selectedNodes).toEqual([expectedNode.id]);
-        });
-
-        it('should not cancel adding a node if the node is new and has value', () => {
-            const setup = nodeList
-                .addNode(100, 100)
-                .setValue('id-1', 'value', 0, 0);
-
-            const result = setup.cancelAddNode();
-
-            const expectedNode = aNode({value: 'value'});
-            expect(result.nodes).toEqual([expectedNode]);
-            expect(result.selectedNodes).toEqual([expectedNode.id]);
-        });
-
-        it('should set the selected node to the previously selected node', () => {
-            const setup = nodeList
-                .addNode(100, 100)
-                .setIsNew('id-1', false)
-                .addNode(100, 100)
-                .setIsSelected('id-2')
-
-            const result = setup.cancelAddNode();
-
-            const expectedNode = aNode({isNew: false});
-            expect(result.nodes).toEqual([expectedNode]);
-            expect(result.selectedNodes).toEqual([expectedNode.id]);
+            expect(result.selectedNodes).toEqual([expectedNode1.id, expectedNode2.id]);
         });
     });
 
@@ -125,6 +76,34 @@ describe('NodeList', () => {
             const expectedNode = aNode({isNew: false});
             expect(result.nodes).toEqual([expectedNode]);
             expect(result.selectedNodes).toEqual([expectedNode.id]);
+        });
+    });
+
+    describe('#removeEmptyNodes', () => {
+        it('should remove all empty nodes', () => {
+            const setup = nodeList
+                .addNode(100, 100)
+                .setValue('id-1', "", 0, 0)
+                .addNode(200, 200)
+                .setValue('id-2', "", 0, 0);
+
+            const result = setup.removeEmptyNodes();
+
+            expect(result.nodes).toEqual([]);
+            expect(result.selectedNodes).toEqual([]);
+        });
+
+        it('should remove all empty nodes including orphans', () => {
+            const setup = nodeList
+                .addNode(100, 100)
+                .setValue('id-1', "", 0, 0)
+                .addNode(200, 200)
+                .setValue('id-2', "value", 0, 0);
+
+            const result = setup.removeEmptyNodes();
+
+            expect(result.nodes).toEqual([]);
+            expect(result.selectedNodes).toEqual([]);
         });
     });
 

@@ -106,7 +106,7 @@ export function Map() {
             if (newNode && newNode.value.length > 0) {
                 setNodeList(nodeList.setIsNew(newNode.id, false).setIsSelected(newNode.id));
             } else {
-                setNodeList(nodeList.cancelAddNode());
+                setNodeList(nodeList.removeEmptyNodes());
             }
         } else {
             setNodeList(nodeList.addNode(e.pageX - pan.x, e.pageY - pan.y));
@@ -123,7 +123,7 @@ export function Map() {
         setNodeList(nodeList.setIsNew(node.id, isNew).setIsSelected(node.id));
 
     const setIsSelected = node => () =>
-        setNodeList(nodeList.setIsSelected(node.id));
+        setNodeList(nodeList.setIsSelected(node.id).removeEmptyNodes());
 
     const setMapDragStart = (x, y) =>
         setStartDrag({type: 'map', x, y});
@@ -135,7 +135,7 @@ export function Map() {
         if (e.key === 'Backspace' || e.key === 'Delete') {
             setNodeList(nodeList.removeNode(nodeList.getSelectedNode()));
         } else if (e.key === 'Escape') {
-            setNodeList(nodeList.cancelAddNode());
+            setNodeList(nodeList.removeEmptyNodes());
         }
     };
 
