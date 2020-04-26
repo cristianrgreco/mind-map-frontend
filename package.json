@@ -10,6 +10,8 @@
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
     "axios": "^0.19.2",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.1.7",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-input-autosize": "^2.2.2",
@@ -25,7 +27,8 @@
     "deploy": "npm run build && npm run deploy:sync",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 9009 -s public",
-    "build-storybook": "build-storybook -s public"
+    "build-storybook": "build-storybook -s public",
+    "format": "prettier --write src"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -50,5 +53,18 @@
     "@storybook/react": "^5.3.18",
     "prettier": "^2.0.5",
     "pretty": "^2.0.0"
+  },
+  "prettier": {
+    "printWidth": 120
+  },
+  "lint-staged": {
+    "src/**/*.{js,json,css,md}": [
+      "prettier --write"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   }
 }

@@ -1,23 +1,23 @@
 .Legend {
-    pointer-events: none;
-    text-align: right;
-    font: 14px sans-serif;
-    color: #ccc;
-    position: fixed;
-    left: calc(100% - 25px);
-    top: calc(100% - 25px);
-    transform: translate(-100%, -100%);
+  pointer-events: none;
+  text-align: right;
+  font: 14px sans-serif;
+  color: #ccc;
+  position: fixed;
+  left: calc(100% - 25px);
+  top: calc(100% - 25px);
+  transform: translate(-100%, -100%);
 }
 
 .Legend .LegendItem {
-    white-space: nowrap;
-    line-height: 20px;
-    font-variant: small-caps;
+  white-space: nowrap;
+  line-height: 20px;
+  font-variant: small-caps;
 }
 
 .Legend .LegendItem .Key {
-    display: inline;
-    padding: 2px;
-    border: 1px solid #ccc;
-    font-size: 10px;
+  display: inline;
+  padding: 2px;
+  border: 1px solid #ccc;
+  font-size: 10px;
 }

@@ -1,8 +1,8 @@
 import React from "react";
-import {render, unmountComponentAtNode} from "react-dom";
-import {act} from "react-dom/test-utils";
+import { render, unmountComponentAtNode } from "react-dom";
+import { act } from "react-dom/test-utils";
 import pretty from "pretty";
-import {Line} from "./Line";
+import { Line } from "./Line";
 
 describe("Line", () => {
   let container = null;
@@ -20,13 +20,7 @@ describe("Line", () => {
 
   it("should match snapshot", () => {
     act(() => {
-      render(
-          <Line
-              from={{x: 0, y: 0, w: 10, h: 10}}
-              to={{x: 5, y: 5, w: 10, h: 10}}
-          />,
-          container
-      );
+      render(<Line from={{ x: 0, y: 0, w: 10, h: 10 }} to={{ x: 5, y: 5, w: 10, h: 10 }} />, container);
     });
 
     expect(pretty(container.innerHTML)).toMatchInlineSnapshot(`

@@ -1,20 +1,20 @@
 .Button {
-    cursor: pointer;
-    padding: 4px 8px;
-    display: inline-flex;
-    user-select: none;
-    background-color: #333;
-    color: #ccc;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+  cursor: pointer;
+  padding: 4px 8px;
+  display: inline-flex;
+  user-select: none;
+  background-color: #333;
+  color: #ccc;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
 .Button:hover {
-    color: #ddd;
-    border-color: #ddd;
-    background-color: #444;
+  color: #ddd;
+  border-color: #ddd;
+  background-color: #444;
 }
 
 .Button:active {
-    background-color: #222;
+  background-color: #222;
 }
