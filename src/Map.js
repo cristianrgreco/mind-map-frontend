@@ -14,7 +14,6 @@ import { MapControls } from "./MapControls";
 /* todo
  *  - add behaviour tests (on click, etc) for Map
  *  - perf enhancement in calculating node colours when updated?
- *  - double clicking node doesn't select it
  */
 export function Map() {
   const size = Math.max(window.innerWidth, window.innerHeight) * 2;
