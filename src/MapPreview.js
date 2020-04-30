@@ -53,33 +53,35 @@ export function MapPreview({ nodeList, pan, setPan, size }) {
   return (
     <div className={styles.MapPreviewContainer} style={containerStyle}>
       <div className={styles.MapPreview} style={mapStyle} onClick={onClick} ref={ref}>
-        {nodeList.nodes.map((node) => {
-          const parent = nodeList.getNode(node.parent);
-          return (
-            <Fragment key={node.id}>
-              <Node
-                value={node.value}
-                setValue={noop}
-                x={node.x}
-                y={node.y}
-                backgroundColor={nodeList.getColour(node)}
-                setStartDrag={noop}
-                isNew={node.isNew}
-                setIsNew={noop}
-                isSelected={node.isSelected}
-                setIsSelected={noop}
-                isPreview={true}
-                isRoot={node.isRoot}
-              />
-              {!node.isRoot && (
-                <Line
-                  from={{ x: node.x, y: node.y, w: node.width, h: node.height }}
-                  to={{ x: parent.x, y: parent.y, w: parent.width, h: parent.height }}
+        <div className={styles.Container}>
+          {nodeList.nodes.map((node) => {
+            const parent = nodeList.getNode(node.parent);
+            return (
+              <Fragment key={node.id}>
+                <Node
+                  value={node.value}
+                  setValue={noop}
+                  x={node.x}
+                  y={node.y}
+                  backgroundColor={nodeList.getColour(node)}
+                  setStartDrag={noop}
+                  isNew={node.isNew}
+                  setIsNew={noop}
+                  isSelected={node.isSelected}
+                  setIsSelected={noop}
+                  isPreview={true}
+                  isRoot={node.isRoot}
                 />
-              )}
-            </Fragment>
-          );
-        })}
+                {!node.isRoot && (
+                  <Line
+                    from={{ x: node.x, y: node.y, w: node.width, h: node.height }}
+                    to={{ x: parent.x, y: parent.y, w: parent.width, h: parent.height }}
+                  />
+                )}
+              </Fragment>
+            );
+          })}
+        </div>
         <Square rect={viewport} />
       </div>
     </div>

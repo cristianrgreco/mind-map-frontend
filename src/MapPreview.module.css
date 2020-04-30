@@ -13,3 +13,7 @@
 .MapPreview {
   position: absolute;
 }
+
+.Container {
+  pointer-events: none;
+}

@@ -15,7 +15,6 @@ import { MapControls } from "./MapControls";
  *  - add behaviour tests (on click, etc) for Map
  *  - perf enhancement in calculating node colours when updated?
  *  - double clicking node doesn't select it
- *  - improve positioning/layering of elements on the canvas
  */
 export function Map() {
   const size = Math.max(window.innerWidth, window.innerHeight) * 2;
