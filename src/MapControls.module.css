@@ -1,13 +1,19 @@
 .Controls {
-    z-index: 5;
-    text-align: left;
-    font: 14px sans-serif;
-    color: #ccc;
-    position: fixed;
-    top: 25px;
-    left: 25px;
+  z-index: 5;
+  text-align: left;
+  font: 14px sans-serif;
+  color: #eee;
+  position: fixed;
+  top: 25px;
+  left: 25px;
 }
 
 .Controls .ControlItem {
-    font-variant: small-caps;
+  font-variant: small-caps;
+}
+
+@media (prefers-color-scheme: light) {
+  .Controls {
+    filter: invert(100%);
+  }
 }

@@ -1,26 +1,33 @@
 .Map {
-    cursor: grab;
-    background-color: #333333;
+  cursor: grab;
+  background-color: #111;
 }
 
 .Map:focus {
-    outline: none;
+  outline: none;
 }
 
 .Map.Empty {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .Start {
-    width: 100%;
-    text-align: center;
-    font: 32px sans-serif;
-    color: #ccc;
-    position: fixed;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    font-variant: small-caps;
-    cursor: pointer;
-    user-select: none;
+  width: 100%;
+  text-align: center;
+  font: 32px sans-serif;
+  color: #eee;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-variant: small-caps;
+  cursor: pointer;
+  user-select: none;
+}
+
+@media (prefers-color-scheme: light) {
+  .Map,
+  .Start {
+    filter: invert(100%);
+  }
 }

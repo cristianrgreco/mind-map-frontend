@@ -25,7 +25,7 @@ describe("Line", () => {
 
     expect(pretty(container.innerHTML)).toMatchInlineSnapshot(`
       "<svg class=\\"Line\\">
-        <polyline points=\\"5,5 10,10\\" style=\\"fill: none; stroke: #ccc; stroke-width: 1;\\"></polyline>
+        <polyline points=\\"5,5 10,10\\" style=\\"fill: none; stroke: #eee; stroke-width: 1;\\"></polyline>
       </svg>"
     `);
   });

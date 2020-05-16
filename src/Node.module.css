@@ -1,47 +1,53 @@
 .Node {
-    display: inline-flex;
-    position: absolute;
-    padding: 14px 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    color: #ccc;
-    font: 14px sans-serif;
-    text-align: center;
-    z-index: 5;
+  display: inline-flex;
+  position: absolute;
+  padding: 14px 20px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  color: #eee;
+  font: 14px sans-serif;
+  text-align: center;
+  z-index: 5;
 }
 
 .Node:hover {
-    cursor: move;
+  cursor: move;
 }
 
 .Node.Root {
-    color: #333;
+  color: #111;
 }
 
 .Node.Preview:hover {
-    cursor: inherit;
+  cursor: inherit;
 }
 
 .Node.Selected input {
-    background-color: inherit;
+  background-color: inherit;
 }
 
 .Node .Edit {
-    font-size: 12px;
-    position: absolute;
-    top: 2px;
-    right: 4px;
+  font-size: 12px;
+  position: absolute;
+  top: 2px;
+  right: 4px;
 }
 
 .Node input {
-    margin: 0;
-    padding: 0;
-    border: none;
-    font: 14px sans-serif;
-    background-color: inherit;
-    color: inherit;
+  margin: 0;
+  padding: 0;
+  border: none;
+  font: 14px sans-serif;
+  background-color: inherit;
+  color: inherit;
 }
 
 .Node input:focus {
-    outline: none;
+  outline: none;
+}
+
+@media (prefers-color-scheme: light) {
+  .Node {
+    filter: hue-rotate(180deg);
+  }
 }

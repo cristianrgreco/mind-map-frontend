@@ -2,7 +2,7 @@
   pointer-events: none;
   text-align: right;
   font: 14px sans-serif;
-  color: #ccc;
+  color: #eee;
   position: fixed;
   left: calc(100% - 25px);
   top: calc(100% - 25px);
@@ -18,6 +18,12 @@
 .Legend .LegendItem .Key {
   display: inline;
   padding: 2px;
-  border: 1px solid #ccc;
+  border: 1px solid #eee;
   font-size: 10px;
+}
+
+@media (prefers-color-scheme: light) {
+  .Legend {
+    filter: invert(100%);
+  }
 }

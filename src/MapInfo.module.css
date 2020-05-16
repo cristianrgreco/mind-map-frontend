@@ -1,21 +1,27 @@
 .Info {
-    pointer-events: none;
-    text-align: left;
-    font: 14px sans-serif;
-    color: #ccc;
-    position: fixed;
-    bottom: 25px;
-    left: 25px;
+  pointer-events: none;
+  text-align: left;
+  font: 14px sans-serif;
+  color: #eee;
+  position: fixed;
+  bottom: 25px;
+  left: 25px;
 }
 
 .Info .InfoItem {
-    line-height: 20px;
-    font-variant: small-caps;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
+  line-height: 20px;
+  font-variant: small-caps;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .ItemIcon {
-    margin-left: 8px;
+  margin-left: 8px;
+}
+
+@media (prefers-color-scheme: light) {
+  .Info {
+    filter: invert(100%);
+  }
 }

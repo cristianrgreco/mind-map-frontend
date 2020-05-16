@@ -131,7 +131,7 @@ export class NodeList {
 
   getColour(node) {
     if (node.isRoot) {
-      return node.isSelected ? "#ccc" : "#aaa";
+      return node.isSelected ? "#eee" : "#aaa";
     }
 
     const rootNode = this.getRootNode();

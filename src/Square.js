@@ -8,7 +8,7 @@ export function Square({ rect }) {
         points={`${rect.x},${rect.y} ${rect.x},${rect.y + rect.h} ${rect.x + rect.w},${rect.y + rect.h} ${
           rect.x + rect.w
         },${rect.y} ${rect.x},${rect.y}`}
-        style={{ fill: "none", stroke: "#ccc", strokeWidth: "15" }}
+        style={{ fill: "none", stroke: "#eee", strokeWidth: "15" }}
       />
     </svg>
   );
